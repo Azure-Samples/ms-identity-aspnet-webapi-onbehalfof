@@ -6,15 +6,18 @@
     "Title": "Calling a downstream web API from another web API in Microsoft identity platform using the On-Behalf-Of flow",
     "Level": 400,
     "Client": ".NET Framework Desktop, JavaScript SPA",
-    "Service": "ASP.NET Web API, Microsoft Graph API"
+    "Service": "ASP.NET Web API, Microsoft Graph API",
+    "RepositoryUrl": "ms-identity-aspnet-webapi-onbehalfof",
+    "Endpoint": "AAD v2.0"
   },
   "AADApps": [
     {
       "Id": "service",
       "Name": "TodoListService-OBO",
+      "Kind": "WebApi",
       "IsPublicClient": false,
       "HomePage": "https://localhost:44321/",
-      "PasswordCredentials": "Auto", // We'd want password credentals to be generated automatically
+      "PasswordCredentials": "Auto",
       "RequiredResourcesAccess": [
         {
           "Resource": "Microsoft Graph",
@@ -23,17 +26,24 @@
       ]
     },
 		{
-			"Id": "client",
+      "Id": "client",
+      "Kind": "WebApp",
 			"Name": "TodoListClient-OBO",
 			"IsPublicClient": true,
-			"HomePage": "http://localhost:16969/",
+      "HomePage": "https://localhost:44377/",
+      "ReplyUrls":"urn:ietf:wg:oauth:2.0:oob,https://localhost:44377",
 			"AllowImplicitFlow": true,
 			"RequiredResourcesAccess": [
 				{
 					"Resource": "service",
 					"DelegatedPermissions": [ "user_impersonation" ]
 				}
-			]
+			],
+      "ManualSteps": [
+        {
+          "Comment": "Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob'."
+        }
+      ]
 		}
   ],
 
@@ -54,7 +64,7 @@
         },
         {
           "key": "ida:Audience",
-          "value": "service.IdentifierUris"
+          "value": "$serviceIdentifierUri"
         },
         {
           "key": "ida:AppKey",
@@ -81,12 +91,8 @@
           "value": "client.AppId"
         },
         {
-          "key": "ida:RedirectUri",
-          "value": ".ReplyUrls"
-        },
-        {
-          "key": "todo:TodoListResourceId",
-          "value": "service.IdentifierUris"
+          "key": "todo:TodoListScope",
+          "value": "$serviceIdentifierUri'/.default'"
         },
         {
           "key": "todo:TodoListBaseAddress",
@@ -96,7 +102,7 @@
     },
 
     {
-      "App": "spa",
+      "App": "client",
       "SettingKind": "Text",
       "SettingFile": "\\..\\TodoListSPA\\appconfig.js",
       "Mappings": [
@@ -114,11 +120,15 @@
         },
         {
           "key": "resourceId",
-          "value": "service.IdentifierUris"
+          "value": "$serviceIdentifierUri"
         },
         {
           "key": "resourceBaseAddress",
           "value": "service.HomePage"
+        },
+        {
+          "key": "webApiScope",
+          "value": "$serviceIdentifierUri+\"/.default\""
         }
       ]
     }
