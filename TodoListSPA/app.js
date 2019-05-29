@@ -83,8 +83,7 @@ function acquireAnAccessTokenAndCallTheProtectedService() {
 			onAccessToken(null, response.accessToken, null);
 		})
 		.catch(err => {
-			console.log(err.errorCode)
-			if (err.name === "InteractionRequiredAuthError" || err.errorCode == "login_required" || err.errorCode == "consent_required") {
+			if (isReLoginError(err)) {
 				clientApplication.acquireTokenPopup(accessTokenRequest).then(
 					function (response) {
 						onAccessToken(null, response.accessToken, null);
@@ -191,6 +190,68 @@ function showAPIResponse(data, token) {
 }
 
 /**
+ * Entry point: called when the user clicks on the "Add Todo" button
+ */
+function addTodo() {
+	if (!document.getElementById("newTodoTxtBox").value) {
+		return;
+	}
+
+	clientApplication.acquireTokenSilent(accessTokenRequest)
+		.then(response => {
+			callAddTodoAPI(response.accessToken, webApiConfig.resourceBaseAddress + "api/todolist");
+		})
+		.catch(err => {
+			if (isReLoginError(err)) {
+				clientApplication.acquireTokenPopup(accessTokenRequest).then(
+					function (response) {
+						callAddTodoAPI(response.accessToken, webApiConfig.resourceBaseAddress + "api/todolist");
+					}).catch(function (error) {
+						console.log(error);
+					});
+			} else {
+				onAccessToken(err.name, null, err.errorMessage)
+			}
+		});
+}
+
+/**
+ * Calls TodoListService POST endpoint to add a new TodoItem, adding the bearer token on the header
+ * @param {string} token - Access token for the web API
+ * @param {string} endpoint - endpoint to the Web API to call
+ */
+function callAddTodoAPI(token, endpoint) {
+	// Header won't work in IE, but you could replace it with a call to AJAX JQuery for instance.
+	var headers = new Headers();
+	var bearer = "Bearer " + token;
+	headers.append("Authorization", bearer);
+	headers.append("Content-Type", "application/json");
+
+	var newTodoTitle = document.getElementById("newTodoTxtBox").value;
+	var data = { title: newTodoTitle };
+
+	var options = {
+		method: "POST",
+		headers: headers,
+		body: JSON.stringify(data)
+	};
+
+	// Note that fetch API is not available in all browsers
+	fetch(endpoint, options)
+		.then(function (response) {
+			if (response.ok) {
+				document.getElementById("newTodoTxtBox").value = "";
+				displayTodoList();
+			} else {
+				showError(endpoint, "Failed to add new todo");
+			}
+		})
+		.catch(function (error) {
+			showError(endpoint, error);
+		});
+}
+
+/**
  * Show an error message in the page
  * @param {any} endpoint - the endpoint used for the error message
  * @param {any} error - the error string
@@ -212,4 +273,8 @@ function showError(endpoint, error) {
 function showProgress(text) {
 	var errorElement = document.getElementById("progressMessage");
 	errorElement.innerText = text;
+}
+
+function isReLoginError(err) {
+	return (err.name === "InteractionRequiredAuthError" || err.errorCode == "login_required" || err.errorCode == "consent_required");
 }

@@ -310,7 +310,7 @@ Function ConfigureApplications
    # Update config file for 'client'
    $configFile = $pwd.Path + "\..\TodoListSPA\appconfig.js"
    Write-Host "Updating the sample code ($configFile)"
-   $dictionary = @{ "tenant" = $tenantName;"clientId" = $clientAadApplication.AppId;"redirectUri" = $clientAadApplication.HomePage;"resourceId" = $serviceIdentifierUri;"resourceBaseAddress" = $serviceAadApplication.HomePage;"webApiScope" = $serviceIdentifierUri+"/.default" };
+   $dictionary = @{ "tenant" = $tenantName;"clientId" = $clientAadApplication.AppId;"redirectUri" = $clientAadApplication.HomePage;"resourceId" = $serviceIdentifierUri;"resourceBaseAddress" = $serviceAadApplication.HomePage;"webApiScope" = $serviceIdentifierUri+"/.default"; "authority"= @("https://login.microsoftonline.com/" + $tenantName); };
    UpdateTextFile -configFilePath $configFile -dictionary $dictionary
    Write-Host ""
    Write-Host -ForegroundColor Green "------------------------------------------------------------------------------------------------" 

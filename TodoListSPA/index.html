@@ -5,7 +5,7 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<title>Displays the todo list</title>
 </head>
-<body>
+<body style="margin: 20px;">
 	<button id="displayTodoList" type="button" class="btn btn-primary" onclick="displayTodoList()">Display the todo list</button>
 	<div id="errorMessage" class="text-danger"></div>
 	<div class="hidden">
@@ -17,6 +17,9 @@
 	</div>
 	<div class="hidden">
 		<h3>Todo list</h3>
+		<div style="margin-bottom: 5px;">
+			<input type="text" id="newTodoTxtBox" placeholder="New todo title"/> <button id="addNewTodo" type="button" class="btn btn-primary" onclick="addTodo()">Add Todo</button>
+		</div>
 		<pre class="well" id="apiResponse"></pre>
 	</div>
 	<button id="signOutButton" type="button" class="btn btn-primary hidden" onclick="signOut()">Sign out</button>
