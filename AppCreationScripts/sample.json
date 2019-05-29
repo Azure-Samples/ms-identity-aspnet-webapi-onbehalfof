@@ -15,7 +15,6 @@
       "Id": "service",
       "Name": "TodoListService-OBO-sample-v2",
       "Kind": "WebApi",
-      "IsPublicClient": false,
       "HomePage": "https://localhost:44321/",
       "PasswordCredentials": "Auto",
       "RequiredResourcesAccess": [
