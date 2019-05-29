@@ -13,7 +13,7 @@
   "AADApps": [
     {
       "Id": "service",
-      "Name": "TodoListService-OBO",
+      "Name": "TodoListService-OBO-sample-v2",
       "Kind": "WebApi",
       "IsPublicClient": false,
       "HomePage": "https://localhost:44321/",
@@ -27,12 +27,9 @@
     },
 		{
       "Id": "client",
-      "Kind": "WebApp",
-			"Name": "TodoListClient-OBO",
-			"IsPublicClient": true,
-      "HomePage": "https://localhost:44377/",
-      "ReplyUrls":"urn:ietf:wg:oauth:2.0:oob,https://localhost:44377",
-			"AllowImplicitFlow": true,
+      "Kind": "Desktop",
+			"Name": "TodoListClient-OBO-sample-v2",
+      "ReplyUrls":"urn:ietf:wg:oauth:2.0:oob",
 			"RequiredResourcesAccess": [
 				{
 					"Resource": "service",
@@ -44,7 +41,20 @@
           "Comment": "Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob'."
         }
       ]
-		}
+    },
+    {
+      "Id": "spa",
+      "Kind": "SinglePageApplication",
+      "Name": "TodoListSPA-OBO-sample-v2",
+      "HomePage": "https://localhost:44377/",
+      "ReplyUrls":"https://localhost:44377",
+      "RequiredResourcesAccess": [
+        {
+          "Resource": "service",
+          "DelegatedPermissions": [ "user_impersonation" ]
+        }
+      ]
+    }
   ],
 
   /*
@@ -102,7 +112,7 @@
     },
 
     {
-      "App": "client",
+      "App": "spa",
       "SettingKind": "Text",
       "SettingFile": "\\..\\TodoListSPA\\appconfig.js",
       "Mappings": [
