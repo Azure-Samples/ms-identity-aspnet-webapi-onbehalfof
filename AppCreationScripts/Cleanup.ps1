@@ -55,7 +55,7 @@ This function removes the Azure AD applications for the sample. These applicatio
     if ($app)
     {
         Remove-AzureADApplication -ObjectId $app.ObjectId
-        Write-Host "Removed TodoListService-OBO-sample-v2."
+        Write-Host "Removed."
     }
 
     Write-Host "Removing 'client' (TodoListClient-OBO-sample-v2) if needed"
@@ -64,17 +64,18 @@ This function removes the Azure AD applications for the sample. These applicatio
     if ($app)
     {
         Remove-AzureADApplication -ObjectId $app.ObjectId
-        Write-Host "Removed TodoListClient-OBO-sample-v2."
+        Write-Host "Removed."
     }
 
-    Write-Host "Removing 'client' (TodoListSPA-OBO-sample-v2) if needed"
+    Write-Host "Removing 'spa' (TodoListSPA-OBO-sample-v2) if needed"
     $app=Get-AzureADApplication -Filter "DisplayName eq 'TodoListSPA-OBO-sample-v2'"  
 
     if ($app)
     {
         Remove-AzureADApplication -ObjectId $app.ObjectId
-        Write-Host "Removed TodoListSPA-OBO-sample-v2."
+        Write-Host "Removed."
     }
+
 }
 
 Cleanup -Credential $Credential -tenantId $TenantId

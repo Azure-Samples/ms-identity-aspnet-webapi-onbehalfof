@@ -102,12 +102,12 @@ As a first step you'll need to:
 1. If your account is present in more than one Azure AD tenant, select your profile at the top right corner in the menu on top of the page, and then **switch directory**.
    Change your portal session to the desired Azure AD tenant.
 
-#### Register the service app (TodoListService-OBO)
+#### Register the service app (TodoListService-OBO-sample-v2)
 
 1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
 1. Select **New registration**.
 1. When the **Register an application page** appears, enter your application's registration information:
-   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListService-OBO`.
+   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListService-OBO-sample-v2`.
    - Change **Supported account types** to **Accounts in any organizational directory**.
 1. Select **Register** to create the application.
 1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
@@ -131,27 +131,27 @@ As a first step you'll need to:
    - Enter the following parameters
      - for **Scope name** use `user_impersonation`
      - Keep **Admins and users** for **Who can consent**
-     - in **Admin consent display name** type `Access TodoListService-OBO as a user`
-     - in **Admin consent description** type `Allow the application to access TodoListService-OBO on behalf of the signed-in user.`
-     - in **User consent display name** type `Access TodoListService-OBO as a user`
-     - in **User consent description** type `Allow the application to access TodoListService-OBO on your behalf.`
+     - in **Admin consent display name** type `Access TodoListService-OBO-sample-v2 as a user`
+     - in **Admin consent description** type `Allow the application to access TodoListService-OBO-sample-v2 on behalf of the signed-in user.`
+     - in **User consent display name** type `Access TodoListService-OBO-sample-v2 as a user`
+     - in **User consent description** type `Allow the application to access TodoListService-OBO-sample-v2 on your behalf.`
      - Keep **State** as **Enabled**
      - Select **Add scope**
 
-#### Register the client app (TodoListClient-OBO)
+#### Register the client app (TodoListClient-OBO-sample-v2)
 
 1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
 1. Select **New registration**.
 1. When the **Register an application page** appears, enter your application's registration information:
-   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListClient-OBO`.
+   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListClient-OBO-sample-v2`.
    - Change **Supported account types** to **Accounts in any organizational directory**.
      > Note that there are more than one redirect URIs. You'll need to add them from the **Authentication** tab later after the app has been created successfully.
 1. Select **Register** to create the application.
 1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
 1. From the app's Overview page, select the **Authentication** section.
    - In the Redirect URIs section, select **Web** in the combo-box and enter the following redirect URIs.
+       - `https://login.microsoftonline.com/common/oauth2/nativeclient`
        - `urn:ietf:wg:oauth:2.0:oob`
-       - `https://localhost:44377`
    - For the `urn:ietf:wg:oauth:2.0:oob` *Redirect URI*, select type `Public client (mobile & desktop)` (this is for the desktop client).
    - In the **Advanced settings** | **Implicit grant** section, check **ID tokens** as this sample requires
      the [Implicit grant flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow) to be enabled to
@@ -160,19 +160,43 @@ As a first step you'll need to:
 1. Select the **API permissions** section
    - Click the **Add a permission** button and then,
    - Ensure that the **My APIs** tab is selected
-   - In the list of APIs, select the API `TodoListService-OBO`.
-   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Access 'TodoListService-OBO'**. Use the search box if necessary.
+   - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Access 'TodoListService-OBO-sample-v2'**. Use the search box if necessary.
    - Select the **Add permissions** button
 
-#### Configure authorized client applications for service (TodoListService-OBO)
+#### Register the SPA app (TodoListSPA-OBO)
 
-For the middle tier web API (`TodoListService-OBO`) to be able to call the downstream web APIs, the user must grant the middle tier permission to do so in the form of consent.
+1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
+1. Select **New registration**.
+1. When the **Register an application page** appears, enter your application's registration information:
+   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListSPA-OBO-sample-v2`.
+   - Change **Supported account types** to **Accounts in any organizational directory**.
+     > Note that there are more than one redirect URIs. You'll need to add them from the **Authentication** tab later after the app has been created successfully.
+1. Select **Register** to create the application.
+1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
+1. From the app's Overview page, select the **Authentication** section.
+   - In the Redirect URIs section, select **Web** in the combo-box and enter the following redirect URI.
+       - `https://localhost:44377`
+   - In the **Advanced settings** | **Implicit grant** section, check **Access tokens** and **ID tokens** as this sample requires
+     the [Implicit grant flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow) to be enabled to
+     sign-in the user, and call an API.
+1. Select **Save**.
+1. Select the **API permissions** section
+   - Click the **Add a permission** button and then,
+   - Ensure that the **My APIs** tab is selected
+   - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Access 'TodoListService-OBO-sample-v2'**. Use the search box if necessary.
+   - Select the **Add permissions** button
+
+#### Configure authorized client applications for service (TodoListService-OBO-sample-v2)
+
+For the middle tier web API (`TodoListService-OBO-sample-v2`) to be able to call the downstream web APIs, the user must grant the middle tier permission to do so in the form of consent.
 However, since the middle tier has no interactive UI of its own, you need to explicitly bind the client app registration in Azure AD, with the registration for the web API.
 This binding merges the consent required by both the client and middle tier into a single dialog, which will be presented to the user by the client.
 You can do so by adding the "Client ID" of the client app, to the manifest of the web API in the `knownClientApplications` property. Here's how:
 
-1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO` app registration, and in the *Expose an API* section, click on **Add a client application**.
-   Client IDs of the client applications (`TodoListClient-OBO`) as elements of the array.
+1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO-sample-v2` app registration, and in the *Expose an API* section, click on **Add a client application**.
+   Client IDs of the client applications (`TodoListClient-OBO-sample-v2`) as elements of the array.
 1. Click **Add application**
 
 ### Step 3:  Configure the sample to use your Azure AD tenant
@@ -188,8 +212,8 @@ Open the solution in Visual Studio to configure the projects
 1. Open the `TodoListService\Web.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
 1. Find the app key `ida:Audience` and replace the existing value with $serviceIdentifierUri.
-1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO` app, in the Azure portal.
-1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO` application copied from the Azure portal.
+1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO-sample-v2` app, in the Azure portal.
+1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO-sample-v2` application copied from the Azure portal.
 
 #### Configure the client project
 
@@ -197,7 +221,7 @@ Open the solution in Visual Studio to configure the projects
 
 1. Open the `TodoListClient\App.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
-1. Find the app key `ida:ClientId` and replace the existing value with the application ID (clientId) of the `TodoListClient-OBO` application copied from the Azure portal.
+1. Find the app key `ida:ClientId` and replace the existing value with the application ID (clientId) of the `TodoListClient-OBO-sample-v2` application copied from the Azure portal.
 1. Find the app key `todo:TodoListScope` and replace the existing value with 'api://{clientId}/.default'.
 1. Find the app key `todo:TodoListBaseAddress` and replace the existing value with the base address of the TodoListService-OBO project (by default `https://localhost:44321/`).
 
@@ -206,8 +230,8 @@ Open the solution in Visual Studio to configure the projects
 > Note: if you used the setup scripts, the changes below will have been applied for you
 
 1. Open the `TodoListSPA\appconfig.js` file
-1. Find the app key `tenant` and replace the existing value with your Azure AD tenant name.
-1. Find the app key `clientId` and replace the existing value with the application ID (clientId) of the `TodoListClient-OBO` application copied from the Azure portal.
+1. Find the app key `authority` and replace the existing value with your authority url, for example `https://login.microsoftonline.com/<your_tenant_name>`.
+1. Find the app key `clientId` and replace the existing value with the application ID (clientId) of the `TodoListSPA-OBO-sample-v2` application copied from the Azure portal.
 1. Find the app key `redirectUri` and replace the existing value with the base address of the TodoListClient-OBO project (by default `http://localhost:16969/`).
 1. Find the app key `resourceId` and replace the existing value with $serviceIdentifierUri.
 1. Find the app key `resourceBaseAddress` and replace the existing value with the base address of the TodoListService-OBO project (by default `https://localhost:44321/`).
@@ -275,7 +299,7 @@ private async void SignIn(object sender = null, RoutedEventArgs args = null)
 Important things to notice:
 
 - The scope [`.default`](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) is a built-in scope for every application that refers to the static list of permissions configured on the application registration. In our scenario here, it enables the user to grant consent for permissions for both the Web API and the downstream API (Microsoft Graph). For example, the permissions for the Web API and the downstream API (Microsoft Graph) are listed below:
-   - TodoListService-OBO
+   - TodoListService-OBO-sample-v2
      - user_impersonation
    - Microsoft Graph
      - user.read
@@ -572,7 +596,76 @@ function callServiceWithToken(token, endpoint) {
 
 ## How to deploy this sample to Azure
 
-Coming soon
+This project has two WebApp / Web API projects. To deploy them to Azure Web Sites, you'll need, for each one, to:
+
+- create an Azure Web Site
+- publish the Web App / Web APIs to the web site, and
+- update its client(s) to call the web site instead of IIS Express.
+
+### Create and publish the `TodoListService-OBO-sample-v2` to an Azure Web Site
+
+1. Sign in to the [Azure portal](https://portal.azure.com).
+1. Click `Create a resource` in the top left-hand corner, select **Web** --> **Web App**, and give your web site a name, for example, `TodoListService-OBO-sample-v2-contoso.azurewebsites.net`.
+1. Thereafter select the `Subscription`, `Resource Group`, `App service plan and Location`. `OS` will be **Windows** and `Publish` will be **Code**.
+1. Click `Create` and wait for the App Service to be created.
+1. Once you get the `Deployment succeeded` notification, then click on `Go to resource` to navigate to the newly created App service.
+1. The following steps provide instructions to create a Sql database that the sample needs. If you already have a Sql Server and database present and a connection string available, skip the steps till we ask you to provide the connections string in the `Application Settings`.
+1. Click `Create a resource` in the top left-hand corner again, select **Databases** --> **SQL Database**, to create a new database. Follow the `Quickstart tutorial` if needed.
+1. You can name the Sql server and database whatever you want to.
+1. Select or create a database server, and enter server login credentials. Carefully note down the username and password for the Sql server as you'll need it when constructing your Sql conenction string later.
+1. Wait for the `Deployment succeeded` notification, then click on `Go to resource` to navigate to the newly created database's manage screen.
+1. Click on **Connection Strings** on left menu and copy the **ADO.NET (SQL authentication)** connection string. Populate  **User ID={your_username};Password={your_password};** with values your provided during database creation.Copy this connection string.
+1. Once the web site is created, locate it it in the **Dashboard** and click it to open **App Services** **Overview** screen.
+1. Click on **Application settings** in the left menu of the App service and add the copied Sql connection string in the **Connection strings** section as `DefaultConnection`.
+1. Choose `SQLAzure` in the **Type** dropdown. **Save** the setting.
+1. From the **Overview** tab of the App Service, download the publish profile by clicking the **Get publish profile** link and save it.  Other deployment mechanisms, such as from source control, can also be used.
+1. Switch to Visual Studio and go to the TodoListService-OBO-sample-v2 project.  Right click on the project in the Solution Explorer and select **Publish**.  Click **Import Profile** on the bottom bar, and import the publish profile that you downloaded earlier.
+1. Click on **Configure** and in the `Connection tab`, update the Destination URL so that it is a `https` in the home page url, for example [https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net). Click **Next**.
+1. On the Settings tab, make sure `Enable Organizational Authentication` is NOT selected.  Click **Save**. Click on **Publish** on the main screen.
+1. Visual Studio will publish the project and automatically open a browser to the URL of the project.  If you see the default web page of the project, the publication was successful.
+1. ### Update the Active Directory tenant application registration for `TodoListService-OBO-sample-v2`
+
+1. Navigate back to to the [Azure portal](https://portal.azure.com).
+In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations (Preview)**.
+1. In the resultant screen, select the `TodoListService-OBO-sample-v2` application.
+1. From the *Branding* menu, update the **Home page URL**, to the address of your service, for example [https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net). Save the configuration.
+1. Add the same URL in the list of values of the *Authentication -> Redirect URIs* menu. If you have multiple redirect urls, make sure that there a new entry using the App service's Uri for each redirect url.
+
+### Update the `TodoListClient-OBO-sample-v2` to call the `TodoListService-OBO-sample-v2` Running in Azure Web Sites
+
+1. In Visual Studio, go to the `TodoListClient-OBO-sample-v2` project.
+2. Open `TodoListClient\App.Config`.  Only one change is needed - update the `todo:TodoListBaseAddress` key value to be the address of the website you published,
+   for example, [https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net).
+3. Run the client! If you are trying multiple different client types (for example, .Net, Windows Store, Android, iOS) you can have them all call this one published web API.
+
+### Update the `TodoListSPA-OBO-sample-v2` to call the `TodoListService-OBO-sample-v2` Running in Azure Web Sites
+
+1. In Visual Studio, go to the `TodoListSPA-OBO-sample-v2` project.
+2. Open `TodoListSPA\appconfig.js`.  Only one change is needed - update the `todo:TodoListBaseAddress` key value to be the address of the website you published,
+   for example, [https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net).
+3. Run the client! If you are trying multiple different client types (for example, .Net, Windows Store, Android, iOS) you can have them all call this one published web API.
+
+### Create and publish the `TodoListSPA-OBO-sample-v2` to an Azure Web Site
+
+1. Sign in to the [Azure portal](https://portal.azure.com).
+1. Click `Create a resource` in the top left-hand corner, select **Web** --> **Web App**, and give your web site a name, for example, `TodoListSPA-OBO-sample-v2-contoso.azurewebsites.net`.
+1. Thereafter select the `Subscription`, `Resource Group`, `App service plan and Location`. `OS` will be **Windows** and `Publish` will be **Code**.
+1. Click `Create` and wait for the App Service to be created.
+1. Once you get the `Deployment succeeded` notification, then click on `Go to resource` to navigate to the newly created App service.
+1. Once the web site is created, locate it it in the **Dashboard** and click it to open **App Services** **Overview** screen.
+1. From the **Overview** tab of the App Service, download the publish profile by clicking the **Get publish profile** link and save it.  Other deployment mechanisms, such as from source control, can also be used.
+1. Switch to Visual Studio and go to the TodoListSPA-OBO-sample-v2 project.  Right click on the project in the Solution Explorer and select **Publish**.  Click **Import Profile** on the bottom bar, and import the publish profile that you downloaded earlier.
+1. Click on **Configure** and in the `Connection tab`, update the Destination URL so that it is a `https` in the home page url, for example [https://TodoListSPA-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListSPA-OBO-sample-v2-contoso.azurewebsites.net). Click **Next**.
+1. On the Settings tab, make sure `Enable Organizational Authentication` is NOT selected.  Click **Save**. Click on **Publish** on the main screen.
+1. Visual Studio will publish the project and automatically open a browser to the URL of the project.  If you see the default web page of the project, the publication was successful.
+
+### Update the Active Directory tenant application registration for `TodoListSPA-OBO-sample-v2`
+
+1. Navigate back to to the [Azure portal](https://portal.azure.com).
+In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations (Preview)**.
+1. In the resultant screen, select the `TodoListSPA-OBO-sample-v2` application.
+1. From the *Branding* menu, update the **Home page URL**, to the address of your service, for example [https://TodoListSPA-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListSPA-OBO-sample-v2-contoso.azurewebsites.net). Save the configuration.
+1. Add the same URL in the list of values of the *Authentication -> Redirect URIs* menu. If you have multiple redirect urls, make sure that there a new entry using the App service's Uri for each redirect url.
 
 ## How To Recreate This Sample
 
