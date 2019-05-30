@@ -359,7 +359,7 @@ else
 
 Important things to notice:
 
-- After the **SignIn**, the user token will be cached and it can be acquired again by calling [AcquireTokenSilent](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client.iclientapplicationbase.acquiretokensilentasync?view=azure-dotnet).
+- After the **Sign-In**, the user token will be cached and it can be acquired again by calling [AcquireTokenSilent](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client.iclientapplicationbase.acquiretokensilentasync?view=azure-dotnet).
 - `MsalUiRequiredException` will be thrown if there is no token for that user with the specified scope in the cache, or it got expired. This case requires the user to **Sign-In** again.
 
 ### TodoListService
@@ -390,7 +390,7 @@ Important things to notice:
 
 #### Call Graph API On Behalf Of User
 
-The logic to call **Microsoft Graph** on behalf of a user is inside the method `CallGraphAPIOnBehalfOfUser`. In this sample, we are getting the user's first name and last name and adding them in the `Todo's` title.
+The logic to call **Microsoft Graph** on behalf of a user is inside the method `CallGraphAPIOnBehalfOfUser`. In this sample, we are getting the user's first name and last name and adding them in the todo's title.
 
 The one thing that you will notice is that we are using a different type of token cache provider in the Web API, which caches tokens in a SQL Server database. The implementation of this caching mechanism is incapsulated in the `MSALPerUserSqlTokenCacheProvider` class.
 
