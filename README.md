@@ -211,7 +211,7 @@ Open the solution in Visual Studio to configure the projects
 
 1. Open the `TodoListService\Web.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
-1. Find the app key `ida:Audience` and replace the existing value with $serviceIdentifierUri.
+1. Find the app key `ida:Audience` and replace the existing value with the App URI you registered earlier for the `TodoListService-OBO-sample-v2` app.
 1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO-sample-v2` app, in the Azure portal.
 1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO-sample-v2` application copied from the Azure portal.
 
@@ -233,7 +233,7 @@ Open the solution in Visual Studio to configure the projects
 1. Find the app key `authority` and replace the existing value with your authority url, for example `https://login.microsoftonline.com/<your_tenant_name>`.
 1. Find the app key `clientId` and replace the existing value with the application ID (clientId) of the `TodoListSPA-OBO-sample-v2` application copied from the Azure portal.
 1. Find the app key `redirectUri` and replace the existing value with the base address of the TodoListClient-OBO project (by default `http://localhost:16969/`).
-1. Find the app key `resourceId` and replace the existing value with $serviceIdentifierUri.
+1. Find the app key `resourceId` and replace the existing value with the App URI you registered earlier for the `TodoListSPA-OBO-sample-v2` app.
 1. Find the app key `resourceBaseAddress` and replace the existing value with the base address of the TodoListService-OBO project (by default `https://localhost:44321/`).
 1. Find the app key `webApiScope` and replace the existing value with "api://{clientId}/.default".
 
