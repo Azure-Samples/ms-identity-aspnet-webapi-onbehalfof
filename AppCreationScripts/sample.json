@@ -28,7 +28,7 @@
       "Id": "client",
       "Kind": "Desktop",
 			"Name": "TodoListClient-OBO-sample-v2",
-      "ReplyUrls": ["urn:ietf:wg:oauth:2.0:oob", "https://login.microsoftonline.com/common/oauth2/nativeclient"],
+      "ReplyUrls": "urn:ietf:wg:oauth:2.0:oob,https://login.microsoftonline.com/common/oauth2/nativeclient",
 			"RequiredResourcesAccess": [
 				{
 					"Resource": "service",
@@ -37,7 +37,7 @@
 			],
       "ManualSteps": [
         {
-          "Comment": "Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob'."
+          "Comment": "Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob' if not already set."
         }
       ]
     },

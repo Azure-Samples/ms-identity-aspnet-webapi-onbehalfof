@@ -163,6 +163,8 @@ Function ConfigureApplications
    so that they are consistent with the Applications parameters
 #> 
 
+    $commonendpoint = "common"
+
     # $tenantId is the Active Directory Tenant. This is a GUID which represents the "Directory ID" of the AzureAD tenant
     # into which you want to create the apps. Look it up in the Azure portal in the "Properties" of the Azure AD.
 
@@ -217,8 +219,8 @@ Function ConfigureApplications
    $owner = Get-AzureADApplicationOwner -ObjectId $serviceAadApplication.ObjectId
    if ($owner -eq $null)
    { 
-    Add-AzureADApplicationOwner -ObjectId $serviceAadApplication.ObjectId -RefObjectId $user.ObjectId
-    Write-Host "'$($user.UserPrincipalName)' added as an application owner to app '$($serviceServicePrincipal.DisplayName)'"
+        Add-AzureADApplicationOwner -ObjectId $serviceAadApplication.ObjectId -RefObjectId $user.ObjectId
+        Write-Host "'$($user.UserPrincipalName)' added as an application owner to app '$($serviceServicePrincipal.DisplayName)'"
    }
 
    Write-Host "Done creating the service application (TodoListService-OBO-sample-v2)"
@@ -254,8 +256,8 @@ Function ConfigureApplications
    $owner = Get-AzureADApplicationOwner -ObjectId $clientAadApplication.ObjectId
    if ($owner -eq $null)
    { 
-    Add-AzureADApplicationOwner -ObjectId $clientAadApplication.ObjectId -RefObjectId $user.ObjectId
-    Write-Host "'$($user.UserPrincipalName)' added as an application owner to app '$($clientServicePrincipal.DisplayName)'"
+        Add-AzureADApplicationOwner -ObjectId $clientAadApplication.ObjectId -RefObjectId $user.ObjectId
+        Write-Host "'$($user.UserPrincipalName)' added as an application owner to app '$($clientServicePrincipal.DisplayName)'"
    }
 
    Write-Host "Done creating the client application (TodoListClient-OBO-sample-v2)"
@@ -294,8 +296,8 @@ Function ConfigureApplications
    $owner = Get-AzureADApplicationOwner -ObjectId $spaAadApplication.ObjectId
    if ($owner -eq $null)
    { 
-    Add-AzureADApplicationOwner -ObjectId $spaAadApplication.ObjectId -RefObjectId $user.ObjectId
-    Write-Host "'$($user.UserPrincipalName)' added as an application owner to app '$($spaServicePrincipal.DisplayName)'"
+        Add-AzureADApplicationOwner -ObjectId $spaAadApplication.ObjectId -RefObjectId $user.ObjectId
+        Write-Host "'$($user.UserPrincipalName)' added as an application owner to app '$($spaServicePrincipal.DisplayName)'"
    }
 
    Write-Host "Done creating the spa application (TodoListSPA-OBO-sample-v2)"
@@ -349,11 +351,14 @@ Function ConfigureApplications
    $dictionary = @{ "tenant" = $tenantName;"clientId" = $spaAadApplication.AppId;"redirectUri" = $spaAadApplication.HomePage;"resourceId" = $serviceIdentifierUri;"resourceBaseAddress" = $serviceAadApplication.HomePage;"webApiScope" = $serviceIdentifierUri+"/.default" };
    UpdateTextFile -configFilePath $configFile -dictionary $dictionary
    Write-Host ""
+   Write-Host -ForegroundColor Green "------------------------------------------------------------------------------------------------" 
    Write-Host "IMPORTANT: Please follow the instructions below to complete a few manual step(s) in the Azure portal":
    Write-Host "- For 'client'"
    Write-Host "  - Navigate to '$clientPortalUrl'"
-   Write-Host "  - Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob'."
+   Write-Host "  - Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob' if not already set." -ForegroundColor Red 
 
+   Write-Host -ForegroundColor Green "------------------------------------------------------------------------------------------------" 
+     
    Add-Content -Value "</tbody></table></body></html>" -Path createdApps.html  
 }
 
