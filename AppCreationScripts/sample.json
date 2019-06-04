@@ -138,6 +138,10 @@
         {
           "key": "webApiScope",
           "value": "$serviceIdentifierUri+\"/.default\""
+        },
+        {
+          "key": "authority",
+          "value": "\"https://login.microsoftonline.com/\"+$tenantName"
         }
       ]
     }

@@ -348,14 +348,14 @@ Function ConfigureApplications
    # Update config file for 'spa'
    $configFile = $pwd.Path + "\..\TodoListSPA\appconfig.js"
    Write-Host "Updating the sample code ($configFile)"
-   $dictionary = @{ "tenant" = $tenantName;"clientId" = $spaAadApplication.AppId;"redirectUri" = $spaAadApplication.HomePage;"resourceId" = $serviceIdentifierUri;"resourceBaseAddress" = $serviceAadApplication.HomePage;"webApiScope" = $serviceIdentifierUri+"/.default" };
+   $dictionary = @{ "tenant" = $tenantName;"clientId" = $spaAadApplication.AppId;"redirectUri" = $spaAadApplication.HomePage;"resourceId" = $serviceIdentifierUri;"resourceBaseAddress" = $serviceAadApplication.HomePage;"webApiScope" = $serviceIdentifierUri+"/.default";"authority" = "https://login.microsoftonline.com/"+$tenantName };
    UpdateTextFile -configFilePath $configFile -dictionary $dictionary
    Write-Host ""
    Write-Host -ForegroundColor Green "------------------------------------------------------------------------------------------------" 
    Write-Host "IMPORTANT: Please follow the instructions below to complete a few manual step(s) in the Azure portal":
    Write-Host "- For 'client'"
    Write-Host "  - Navigate to '$clientPortalUrl'"
-   Write-Host "  - Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob' if not already set." -ForegroundColor Red 
+   Write-Host "  - Navigate to the Authentication blade of the TodoListClient-OBO-sample-v2 app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob' if not already set." -ForegroundColor Red 
 
    Write-Host -ForegroundColor Green "------------------------------------------------------------------------------------------------" 
      
