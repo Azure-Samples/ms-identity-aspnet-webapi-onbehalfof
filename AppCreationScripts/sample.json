@@ -37,7 +37,7 @@
 			],
       "ManualSteps": [
         {
-          "Comment": "Navigate to the Authentication blade of the client app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob' if not already set."
+          "Comment": "Navigate to the Authentication blade of the TodoListClient-OBO-sample-v2 app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob' if not already set."
         }
       ]
     },
