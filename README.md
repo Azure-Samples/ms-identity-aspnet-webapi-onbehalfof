@@ -164,7 +164,7 @@ As a first step you'll need to:
    - In the **Delegated permissions** section, ensure that the right permissions are checked: **Access 'TodoListService-OBO-sample-v2'**. Use the search box if necessary.
    - Select the **Add permissions** button
 
-#### Register the SPA app (TodoListSPA-OBO)
+#### Register the SPA app (TodoListSPA-OBO-sample-v2)
 
 1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
 1. Select **New registration**.
@@ -196,7 +196,7 @@ This binding merges the consent required by both the client and middle tier into
 You can do so by adding the "Client ID" of the client app, to the manifest of the web API in the `knownClientApplications` property. Here's how:
 
 1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO-sample-v2` app registration, and in the *Expose an API* section, click on **Add a client application**.
-   Client IDs of the client applications (`TodoListClient-OBO-sample-v2`) as elements of the array.
+   Client IDs of the client applications (`TodoListClient-OBO-sample-v2`, `TodoListSPA-OBO-sample-v2`) as elements of the array.
 1. Click **Add application**
 
 ### Step 3:  Configure the sample to use your Azure AD tenant
@@ -232,7 +232,7 @@ Open the solution in Visual Studio to configure the projects
 1. Open the `TodoListSPA\appconfig.js` file
 1. Find the app key `authority` and replace the existing value with your authority url, for example `https://login.microsoftonline.com/<your_tenant_name>`.
 1. Find the app key `clientId` and replace the existing value with the application ID (clientId) of the `TodoListSPA-OBO-sample-v2` application copied from the Azure portal.
-1. Find the app key `redirectUri` and replace the existing value with the base address of the TodoListClient-OBO project (by default `http://localhost:16969/`).
+1. Find the app key `redirectUri` and replace the existing value with the base address of the TodoListClient-OBO project (by default `https://localhost:44377/`).
 1. Find the app key `resourceId` and replace the existing value with the App URI you registered earlier for the `TodoListSPA-OBO-sample-v2` app.
 1. Find the app key `resourceBaseAddress` and replace the existing value with the base address of the TodoListService-OBO project (by default `https://localhost:44321/`).
 1. Find the app key `webApiScope` and replace the existing value with "api://{clientId}/.default".
