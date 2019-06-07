@@ -621,9 +621,13 @@ This project has two WebApp / Web API projects. To deploy them to Azure Web Site
 1. From the **Overview** tab of the App Service, download the publish profile by clicking the **Get publish profile** link and save it.  Other deployment mechanisms, such as from source control, can also be used.
 1. Switch to Visual Studio and go to the TodoListService-OBO-sample-v2 project.  Right click on the project in the Solution Explorer and select **Publish**.  Click **Import Profile** on the bottom bar, and import the publish profile that you downloaded earlier.
 1. Click on **Configure** and in the `Connection tab`, update the Destination URL so that it is a `https` in the home page url, for example [https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net). Click **Next**.
-1. On the Settings tab, make sure `Enable Organizational Authentication` is NOT selected.  Click **Save**. Click on **Publish** on the main screen.
-1. Visual Studio will publish the project and automatically open a browser to the URL of the project.  If you see the default web page of the project, the publication was successful.
-1. ### Update the Active Directory tenant application registration for `TodoListService-OBO-sample-v2`
+1. On the Settings tab, make sure `Enable Organizational Authentication` is NOT selected.
+1. Under **Databases**, select the connection that you created on **Azure Portal** (if it does not show on the dropdown, click on the button and add it).
+1. Make sure `Use this connection string at runtime` and `Execute Code First Migrations` are **checked**.
+1. Click **Save**. Click on **Publish** on the main screen.
+1. Visual Studio will publish the project and automatically open a browser to the URL of the project. Give it a minute for the migrations to run. If you see the default web page of the project, the publication was successful.
+
+### Update the Active Directory tenant application registration for `TodoListService-OBO-sample-v2`
 
 1. Navigate back to to the [Azure portal](https://portal.azure.com).
 In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations (Preview)**.
