@@ -34,12 +34,7 @@
 					"Resource": "service",
 					"DelegatedPermissions": [ "user_impersonation" ]
 				}
-			],
-      "ManualSteps": [
-        {
-          "Comment": "Navigate to the Authentication blade of the TodoListClient-OBO-sample-v2 app and change 'Redirect URIs Type' to 'Public client (mobile & desktop)' for 'urn:ietf:wg:oauth:2.0:oob' if not already set."
-        }
-      ]
+			]
     },
     {
       "Id": "spa",
@@ -73,7 +68,7 @@
         },
         {
           "key": "ida:Audience",
-          "value": "$serviceIdentifierUri"
+          "value": "service.IdentifierUris"
         },
         {
           "key": "ida:AppKey",

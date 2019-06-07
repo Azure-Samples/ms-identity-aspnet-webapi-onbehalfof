@@ -616,7 +616,7 @@ This project has two WebApp / Web API projects. To deploy them to Azure Web Site
 1. Wait for the `Deployment succeeded` notification, then click on `Go to resource` to navigate to the newly created database's manage screen.
 1. Click on **Connection Strings** on left menu and copy the **ADO.NET (SQL authentication)** connection string. Populate  **User ID={your_username};Password={your_password};** with values your provided during database creation.Copy this connection string.
 1. Once the web site is created, locate it it in the **Dashboard** and click it to open **App Services** **Overview** screen.
-1. Click on **Application settings** in the left menu of the App service and add the copied Sql connection string in the **Connection strings** section as `DefaultConnection`.
+1. Click on **Configuration** in the left menu of the App service and add the copied Sql connection string in the **Connection strings** section as `DefaultConnection`.
 1. Choose `SQLAzure` in the **Type** dropdown. **Save** the setting.
 1. From the **Overview** tab of the App Service, download the publish profile by clicking the **Get publish profile** link and save it.  Other deployment mechanisms, such as from source control, can also be used.
 1. Switch to Visual Studio and go to the TodoListService-OBO-sample-v2 project.  Right click on the project in the Solution Explorer and select **Publish**.  Click **Import Profile** on the bottom bar, and import the publish profile that you downloaded earlier.
