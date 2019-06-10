@@ -24,9 +24,9 @@ SOFTWARE.
 
 namespace TodoListClient
 {
-	class TodoItem
-	{
-		public string Title { get; set; }
-		public string Owner { get; set; }
-	}
+    class TodoItem
+    {
+        public string Title { get; set; }
+        public string Owner { get; set; }
+    }
 }
