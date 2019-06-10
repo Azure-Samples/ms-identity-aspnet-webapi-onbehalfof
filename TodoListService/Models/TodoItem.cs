@@ -26,11 +26,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TodoListService.Models
 {
-	public class TodoItem
-	{
-		[Key]
-		public int ID { get; set; }
-		public string Title { get; set; }
-		public string Owner { get; set; }
-	}
+    public class TodoItem
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public string Owner { get; set; }
+    }
 }
