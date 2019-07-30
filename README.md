@@ -5,14 +5,14 @@ author: TiagoBrenck
 level: 400
 client: .NET Framework 4.7 Console, JavaScript SPA
 service: ASP.NET Web API
-endpoint: AAD V2
+endpoint: Microsoft identity platform
 ---
 
 # Calling a downstream web API from another web API in Microsoft identity platform using the On-Behalf-Of flow
 
 ![Build badge](https://identitydivision.visualstudio.com/_apis/public/build/definitions/a7934fdd-dcde-4492-a406-7fad6ac00e17/487/badge)
 
-> This newer sample takes advantage of the Microsoft identity platform (formerly Azure AD v2.0).
+> This newer sample takes advantage of the Microsoft identity platform.
 
 ## About this sample
 
@@ -22,7 +22,7 @@ This sample demonstrates a .NET Framework Desktop and JavaScript SPA application
 
 1. The .Net client desktop application and the JavaScript SPA application both use the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview) to obtain an access token from Azure Active Directory (Azure AD) for the authenticated users:
 1. The access token is used as a bearer token to authenticate the user when calling the ASP.NET Web API and the Microsoft Graph API.
-1. This sample also uses the name Application ID (client ID) across multiple client applications, a feature supported by the new [Microsoft Identity Platform (Azure AD V2)](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
+1. This sample also uses the name Application ID (client ID) across multiple client applications, a feature supported by the new [Microsoft Identity Platform](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
 
 > Looking for previous versions of this code sample? Check out the tags on the [releases](../../releases) GitHub page.
 
@@ -720,10 +720,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Other samples and documentation
 
-- Other samples for Azure AD v2.0 are available from [https://aka.ms/aaddevsamplesv2](https://aka.ms/aaddevsamplesv2)
+- Other samples for Microsoft identity platform are available from [https://aka.ms/aaddevsamplesv2](https://aka.ms/aaddevsamplesv2)
 - [Microsoft identity platform and Implicit grant flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow)
 - [Microsoft identity platform and OAuth 2.0 On-Behalf-Of flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)
 - The conceptual documentation for MSAL.NET is available from [https://aka.ms/msalnet](https://aka.ms/msalnet)
-- the documentation for Azure AD v2.0 is available from [https://aka.ms/aadv2](https://aka.ms/aadv2)
+- the documentation for Microsoft identity platform is available from [https://aka.ms/aadv2](https://aka.ms/aadv2)
 - [Why update to Microsoft identity platform (v2.0)?](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
 For more information about how OAuth 2.0 protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
