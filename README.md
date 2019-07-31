@@ -6,6 +6,15 @@ level: 400
 client: .NET Framework 4.7 Console, JavaScript SPA
 service: ASP.NET Web API
 endpoint: Microsoft identity platform
+page_type: sample
+languages:
+  - csharp  
+products:
+  - azure
+  - azure-active-directory  
+  - dotnet
+  - office-ms-graph
+description: "Shows a .NET Framework Desktop and JavaScript SPA application using the on-behalf-of authentication flow to call an ASP.NET Web API, which in turn calls Microsoft Graph."
 ---
 
 # Calling a downstream web API from another web API in Microsoft identity platform using the On-Behalf-Of flow
@@ -630,7 +639,7 @@ This project has two WebApp / Web API projects. To deploy them to Azure Web Site
 ### Update the Active Directory tenant application registration for `TodoListService-OBO-sample-v2`
 
 1. Navigate back to to the [Azure portal](https://portal.azure.com).
-In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations (Preview)**.
+In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations**.
 1. In the resultant screen, select the `TodoListService-OBO-sample-v2` application.
 1. From the *Branding* menu, update the **Home page URL**, to the address of your service, for example [https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListService-OBO-sample-v2-contoso.azurewebsites.net). Save the configuration.
 1. Add the same URL in the list of values of the *Authentication -> Redirect URIs* menu. If you have multiple redirect urls, make sure that there a new entry using the App service's Uri for each redirect url.
@@ -666,7 +675,7 @@ In the left-hand navigation pane, select the **Azure Active Directory** service,
 ### Update the Active Directory tenant application registration for `TodoListSPA-OBO-sample-v2`
 
 1. Navigate back to to the [Azure portal](https://portal.azure.com).
-In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations (Preview)**.
+In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations**.
 1. In the resultant screen, select the `TodoListSPA-OBO-sample-v2` application.
 1. From the *Branding* menu, update the **Home page URL**, to the address of your service, for example [https://TodoListSPA-OBO-sample-v2-contoso.azurewebsites.net](https://TodoListSPA-OBO-sample-v2-contoso.azurewebsites.net). Save the configuration.
 1. Add the same URL in the list of values of the *Authentication -> Redirect URIs* menu. If you have multiple redirect urls, make sure that there a new entry using the App service's Uri for each redirect url.
@@ -725,5 +734,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 - [Microsoft identity platform and OAuth 2.0 On-Behalf-Of flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)
 - The conceptual documentation for MSAL.NET is available from [https://aka.ms/msalnet](https://aka.ms/msalnet)
 - the documentation for Microsoft identity platform is available from [https://aka.ms/aadv2](https://aka.ms/aadv2)
-- [Why update to Microsoft identity platform (v2.0)?](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
+- [Why update to Microsoft identity platform?](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
 For more information about how OAuth 2.0 protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
