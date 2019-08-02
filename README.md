@@ -139,7 +139,7 @@ As a first step you'll need to:
    - accept the proposed Application ID URI (api://{clientId}) by selecting **Save and Continue**
    - Enter the following parameters
      - for **Scope name** use `user_impersonation`
-     - Keep **Admins and users** for **Who can consent**
+     - Select **Admins and users** for **Who can consent**
      - in **Admin consent display name** type `Access TodoListService-OBO-sample-v2 as a user`
      - in **Admin consent description** type `Allow the application to access TodoListService-OBO-sample-v2 on behalf of the signed-in user.`
      - in **User consent display name** type `Access TodoListService-OBO-sample-v2 as a user`
@@ -170,7 +170,7 @@ As a first step you'll need to:
    - Click the **Add a permission** button and then,
    - Ensure that the **My APIs** tab is selected
    - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
-   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Access 'TodoListService-OBO-sample-v2'**. Use the search box if necessary.
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **user_impersonation**.
    - Select the **Add permissions** button
 
 #### Register the SPA app (TodoListSPA-OBO-sample-v2)
@@ -197,6 +197,17 @@ As a first step you'll need to:
    - In the **Delegated permissions** section, ensure that the right permissions are checked: **Access 'TodoListService-OBO-sample-v2'**. Use the search box if necessary.
    - Select the **Add permissions** button
 
+#### Configure known client applications for service (TodoListService-OBO-sample-v2)
+
+For the middle tier web API (`TodoListService-OBO-sample-v2`) to be able to call the downstream web APIs, the user must grant the middle tier permission to do so in the form of consent.
+However, since the middle tier has no interactive UI of its own, you need to explicitly bind the client app registration in Azure AD, with the registration for the web API.
+This binding merges the consent required by both the client and middle tier into a single dialog, which will be presented to the user by the client.
+You can do so by adding the "Client ID" of the client app, to the manifest of the web API in the `knownClientApplications` property. Here's how:
+
+1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO-sample-v2` app registration and click on the **Manifest** section.
+1. Find the property `knownClientApplications` and add the Client IDs of the client applications (`TodoListClient-OBO-sample-v2`, `TodoListSPA-OBO-sample-v2`) as elements of the array.
+1. Click **Save**
+
 ### Step 3:  Configure the sample to use your Azure AD tenant
 
 In the steps below, "ClientID" is the same as "Application ID" or "AppId".
@@ -209,7 +220,7 @@ Open the solution in Visual Studio to configure the projects
 
 1. Open the `TodoListService\Web.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
-1. Find the app key `ida:Audience` and replace the existing value with the App URI you registered earlier for the `TodoListService-OBO-sample-v2` app.
+1. Find the app key `ida:Audience` and replace the existing value with the App URI you registered earlier for the `TodoListService-OBO-sample-v2` app (`api://{TodoListService-OBO-sample-v2 clientId}`).
 1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO-sample-v2` app, in the Azure portal.
 1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO-sample-v2` application copied from the Azure portal.
 
@@ -220,7 +231,7 @@ Open the solution in Visual Studio to configure the projects
 1. Open the `TodoListClient\App.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
 1. Find the app key `ida:ClientId` and replace the existing value with the application ID (clientId) of the `TodoListClient-OBO-sample-v2` application copied from the Azure portal.
-1. Find the app key `todo:TodoListScope` and replace the existing value with 'api://{clientId}/.default'.
+1. Find the app key `todo:TodoListScope` and replace the existing value with `api://{service clientId}/.default`.
 1. Find the app key `todo:TodoListBaseAddress` and replace the existing value with the base address of the TodoListService-OBO project (by default `https://localhost:44321/`).
 
 #### Configure the client SPA project
