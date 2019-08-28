@@ -3,13 +3,13 @@
 const clientApplication = new Msal.UserAgentApplication(config);
 
 const loginRequest = {
-	scopes: [config.webApiScope],
-	prompt: "select_account",
-}
+    scopes: [config.webApiScope],
+    prompt: "select_account"
+};
 
 const accessTokenRequest = {
-	scopes: [config.webApiScope]
-}
+    scopes: [config.webApiScope]
+};
 
 /**
  * Entry point: called when the user clicks on the "Display the todo list" button
@@ -91,7 +91,7 @@ function acquireAnAccessTokenAndCallTheProtectedService() {
 						console.log(error);
 					});
 			} else {
-				onAccessToken(err.name, null, err.errorMessage)
+                onAccessToken(err.name, null, err.errorMessage);
 			}
 		});
 }
@@ -210,7 +210,7 @@ function addTodo() {
 						console.log(error);
 					});
 			} else {
-				onAccessToken(err.name, null, err.errorMessage)
+                onAccessToken(err.name, null, err.errorMessage);
 			}
 		});
 }
@@ -276,5 +276,5 @@ function showProgress(text) {
 }
 
 function isReLoginError(err) {
-	return (err.name === "InteractionRequiredAuthError" || err.errorCode == "login_required" || err.errorCode == "consent_required");
+	return err.name === "InteractionRequiredAuthError" || err.errorCode === "login_required" || err.errorCode === "consent_required";
 }
