@@ -1,7 +1,7 @@
-﻿using Microsoft.Owin.Security.ActiveDirectory;
+﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security.ActiveDirectory;
 using Owin;
 using System.Configuration;
-using System.IdentityModel.Tokens;
 
 namespace TodoListService
 {

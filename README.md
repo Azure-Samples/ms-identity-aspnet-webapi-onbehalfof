@@ -419,9 +419,9 @@ private async Task<UserProfile> CallGraphAPIOnBehalfOfUser()
 
       MSALPerUserSqlTokenCacheProvider sqlCache = new MSALPerUserSqlTokenCacheProvider(app.UserTokenCache, db, ClaimsPrincipal.Current);
 
-      var bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext as System.IdentityModel.Tokens.BootstrapContext;
+      var bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext.ToString();
 
-      UserAssertion userAssertion = new UserAssertion(bootstrapContext.Token, "urn:ietf:params:oauth:grant-type:jwt-bearer");
+      UserAssertion userAssertion = new UserAssertion(bootstrapContext, "urn:ietf:params:oauth:grant-type:jwt-bearer");
 
       AuthenticationResult result = await app.AcquireTokenOnBehalfOf(scopes, userAssertion)
          .ExecuteAsync();
