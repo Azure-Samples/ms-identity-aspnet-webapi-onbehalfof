@@ -189,7 +189,7 @@ namespace TodoListClient
             AuthenticationResult result = null;
             try
             {
-                //Calling MSAL to acquire an access token with the scope 'user_impersonation' for the logged user IAccount
+                //Calling MSAL to acquire an access token with the scope 'access_as_user' for the logged user IAccount
                 result = await _app.AcquireTokenSilent(Scopes, accounts.FirstOrDefault())
                     .ExecuteAsync()
                     .ConfigureAwait(false);

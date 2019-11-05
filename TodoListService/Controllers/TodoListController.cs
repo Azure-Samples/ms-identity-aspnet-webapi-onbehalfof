@@ -67,11 +67,11 @@ namespace TodoListService.Controllers
         public IEnumerable<TodoItem> Get()
         {
             // The Scope claim tells you what permissions the client application has in the service.
-            // In this case we look for a scope value of user_impersonation, or full access to the service as the user.
+            // In this case we look for a scope value of access_as_user, or full access to the service as the user.
             var scopeClaim = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope");
-            if (scopeClaim == null || (!scopeClaim.Value.Contains("user_impersonation")))
+            if (scopeClaim == null || (!scopeClaim.Value.Contains("access_as_user")))
             {
-                throw new HttpResponseException(new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized, ReasonPhrase = "The Scope claim does not contain 'user_impersonation' or scope claim not found" });
+                throw new HttpResponseException(new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized, ReasonPhrase = "The Scope claim does not contain 'access_as_user' or scope claim not found" });
             }
 
             // A user's To Do list is keyed off of the NameIdentifier claim, which contains an immutable, unique identifier for the user.
@@ -88,9 +88,9 @@ namespace TodoListService.Controllers
             try
             {
                 var scopeClaim = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope");
-                if (scopeClaim == null || !scopeClaim.Value.Contains("user_impersonation"))
+                if (scopeClaim == null || !scopeClaim.Value.Contains("access_as_user"))
                 {
-                    throw new HttpResponseException(new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized, ReasonPhrase = "The Scope claim does not contain 'user_impersonation' or scope claim not found" });
+                    throw new HttpResponseException(new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized, ReasonPhrase = "The Scope claim does not contain 'access_as_user' or scope claim not found" });
                 }
 
                 // Call the Graph API On Behalf Of the user who called the To Do list web API.
@@ -176,12 +176,12 @@ namespace TodoListService.Controllers
             catch (MsalUiRequiredException msalServiceException)
             {
                 /*
-				* If you used the scope `.default` on the client application, the user would have been prompted to consent for Graph API back there
-				* and no incremental consents are required (this exception is not expected). However, if you are using the scope `user_impersonation`,
-				* this exception will be thrown at the first time the API tries to access Graph on behalf of the user for an incremental consent.
-				* You must then, add the logic to delegate the consent screen to your client application here.
-				* This sample doesn't use the incremental consent strategy.
-				*/
+                * If you used the scope `.default` on the client application, the user would have been prompted to consent for Graph API back there
+                * and no incremental consents are required (this exception is not expected). However, if you are using the scope `access_as_user`,
+                * this exception will be thrown at the first time the API tries to access Graph on behalf of the user for an incremental consent.
+                * You must then, add the logic to delegate the consent screen to your client application here.
+                * This sample doesn't use the incremental consent strategy.
+                */
                 throw msalServiceException;
             }
             catch (Exception ex)
