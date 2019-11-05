@@ -72,6 +72,7 @@ namespace TodoListClient
             //Create an instance of PublicClientApplication using the Build Patten
             _app = PublicClientApplicationBuilder.Create(clientId)
                 .WithAuthority(authority)
+                .WithDefaultRedirectUri()
                 .Build();
 
             //Hooking our file cache into the UserTokenCache

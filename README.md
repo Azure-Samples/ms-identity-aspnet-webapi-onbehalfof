@@ -14,10 +14,10 @@ products:
   - azure-active-directory  
   - dotnet
   - office-ms-graph
-description: "This sample demonstrates a .NET Framework Desktop, JavaScript SPA application calling a ASP.NET Web API, Microsoft Graph API that is secured using Azure Active Directory"
+description: "This sample demonstrates a .NET Framework Desktop, JavaScript SPA application calling an ASP.NET Web API, Microsoft Graph API that is secured with the Microsoft identity platform"
 ---
 
-# Call a downstream web API (Microsoft Graph) from a web API secured with Microsoft identity platform using the On-Behalf-Of flow
+# Call a downstream web API (Microsoft Graph) from a web API secured with the Microsoft identity platform (Azure Active Directory) using the On-Behalf-Of flow
 
 ![Build badge](https://identitydivision.visualstudio.com/_apis/public/build/definitions/a7934fdd-dcde-4492-a406-7fad6ac00e17/487/badge)
 
@@ -27,7 +27,7 @@ description: "This sample demonstrates a .NET Framework Desktop, JavaScript SPA 
 
 This sample demonstrates a .NET Framework Desktop and JavaScript SPA application calling an ASP.NET Web API, which in turn calls the [Microsoft Graph](https://graph.microsoft.com) using an [access token](https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens) obtained using the [on-behalf-of](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) flow. All these are secured using the [Microsoft identity platform (formerly Azure Active Directory for developers)](https://docs.microsoft.com/en-us/azure/active-directory/develop/)
 
-1. The .Net client desktop application and the JavaScript SPA application both use the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview) to obtain an access token for the ASP.NET Web Api from Microsoft identity platform (Azure AD) for the authenticated user.
+1. The .Net client desktop application and the JavaScript SPA application both use the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview) to obtain an access token for the ASP.NET Web Api from the Microsoft identity platform for the authenticated user.
 1. The access token is then used as a bearer token to authorize the caller in the ASP.NET Web API and then subsequently for Microsoft Graph API.
 1. This sample also uses the same app registration (same Application ID (client ID)) across multiple client applications, a feature supported by the new [Microsoft Identity Platform](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
 
@@ -46,7 +46,7 @@ The **TodoListService** (the Asp.net Web API) uses a database to:
 
 ### Scenario. How the sample uses MSAL.NET (and MSAL.js)
 
-- `TodoListClient` uses [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to acquire an access token for the user in order to call **TodoListService** Web API. For more information about how to acquire tokens interactively, see [Acquiring tokens interactively Public client application flows](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively).
+- `TodoListClient` uses [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to acquire an access token for the user in order to call **TodoListService** Web API. For more information about how to acquire tokens interactively, see [Acquiring tokens interactively with Public client application flows](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively).
 - `TodoListSPA`, the single page application, uses [MSAL.js](https://github.com/AzureAD/microsoft-authentication-library-for-js) to acquire the access token to call **TodoListService** Web API.
 - Then `TodoListService` also uses [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to get another access token using the on-behalf-of flow to call the [Microsoft Graph](https://graph.microsoft.com/). For details, see [Service to service calls on behalf of the user](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/on-behalf-of). It then uses the claims obtained from the access token to decorate the ToDo list item entered by the user, with the First name and the Last name of the user. Below is a screenshot of what happens when the user named *automation service account* entered "item1" in the textbox.
 
@@ -132,10 +132,10 @@ As a first step you'll need to:
    - Ensure that the **Microsoft APIs** tab is selected.
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
    - In the **Delegated permissions** section, select the **User.Read** in the list. Use the search box if necessary.
-   - Click on the **Add permissions** button in the bottom.
-1. In the app's registration screen, click on the **Expose an API** blade in the left to open the page where declare the parameters to expose this app as an Api for which client applications can obtain [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) for.
+   - Click on the **Add permissions** button at the bottom.
+1. In the app's registration screen, click on the **Expose an API** blade in the left to open the page where you can declare the parameters to expose this app as an Api for which client applications can obtain [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) for.
 The first thing that we need to do is to declare the unique [resource](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow) URI that the clients will be using to obtain access tokens for this Api. To declare an resource URI, follow the following steps:
-   - Click `Set` next to the **Application ID URI** to generate a URI thats unique for this app.
+   - Click `Set` next to the **Application ID URI** to generate a URI that's unique for this app.
    - For this sample, accept the proposed Application ID URI (api://{clientId}) by selecting **Save**.
 1. All Apis have to publish a minimum of one [scope](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code) for the client's to obtain an access token successfully. To publish a scope, follow the following steps:
    - Select **Add a scope** button open the **Add a scope** screen and Enter the values as indicated below:
@@ -170,7 +170,6 @@ Open the project in your IDE (like Visual Studio) to configure the code.
 1. In the app's registration screen, find the **Application (client) ID** value and record it for use later. You'll need it to configure the configuration file(s) later in your code.
 1. In the app's registration screen, click on the **Authentication** blade in the left.
    - In the Redirect URIs section, select **Public client (mobile & desktop)** in the drop down and enter the following redirect URIs.
-       - `urn:ietf:wg:oauth:2.0:oob`
        - `https://login.microsoftonline.com/common/oauth2/nativeclient`
    - In the **Redirect URIs** | **Suggested Redirect URIs for public clients (mobile, desktop)** section, select **urn:ietf:wg:oauth:2.0:oob**
 
@@ -180,7 +179,7 @@ Open the project in your IDE (like Visual Studio) to configure the code.
    - Ensure that the **My APIs** tab is selected.
    - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
    - In the **Delegated permissions** section, select the **access_as_user** in the list. Use the search box if necessary.
-   - Click on the **Add permissions** button in the bottom.
+   - Click on the **Add permissions** button at the bottom.
 
 ##### Configure the  client app (TodoListClient-OBO-sample-v2) to use your app registration
 
@@ -214,7 +213,7 @@ Open the project in your IDE (like Visual Studio) to configure the code.
    - Ensure that the **My APIs** tab is selected.
    - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
    - In the **Delegated permissions** section, select the **access_as_user** in the list. Use the search box if necessary.
-   - Click on the **Add permissions** button in the bottom.
+   - Click on the **Add permissions** button at the bottom.
 
 ##### Configure the  spa app (TodoListSPA-OBO-sample-v2) to use your app registration
 

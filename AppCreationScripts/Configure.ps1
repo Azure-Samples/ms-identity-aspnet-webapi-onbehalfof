@@ -316,7 +316,7 @@ Function ConfigureApplications
    Write-Host "Creating the AAD application (TodoListClient-OBO-sample-v2)"
    # create the application 
    $clientAadApplication = New-AzureADApplication -DisplayName "TodoListClient-OBO-sample-v2" `
-                                                  -ReplyUrls "urn:ietf:wg:oauth:2.0:oob", "https://login.microsoftonline.com/common/oauth2/nativeclient" `
+                                                  -ReplyUrls "https://login.microsoftonline.com/common/oauth2/nativeclient" `
                                                   -AvailableToOtherTenants $True `
                                                   -PublicClient $True
 
