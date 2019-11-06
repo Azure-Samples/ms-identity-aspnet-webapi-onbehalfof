@@ -25,17 +25,17 @@ description: "This sample demonstrates a .NET Framework Desktop, JavaScript SPA 
 
 ### Overview
 
-This sample demonstrates a .NET Framework Desktop and JavaScript SPA application calling an ASP.NET Web API, which in turn calls the [Microsoft Graph](https://graph.microsoft.com) using an [access token](https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens) obtained using the [on-behalf-of](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) flow. All these are secured using the [Microsoft identity platform (formerly Azure Active Directory for developers)](https://docs.microsoft.com/en-us/azure/active-directory/develop/)
+This sample demonstrates a .NET Framework Desktop and JavaScript SPA application calling an ASP.NET Web API, which in turn calls the [Microsoft Graph](https://graph.microsoft.com) using an [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) obtained using the [on-behalf-of](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) flow. All these are secured using the [Microsoft identity platform (formerly Azure Active Directory for developers)](https://docs.microsoft.com/azure/active-directory/develop/)
 
-1. The .Net client desktop application and the JavaScript SPA application both use the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview) to obtain an access token for the ASP.NET Web Api from the Microsoft identity platform for the authenticated user.
+1. The .Net client desktop application and the JavaScript SPA application both use the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/azure/active-directory/develop/msal-overview) to obtain an access token for the ASP.NET Web Api from the Microsoft identity platform for the authenticated user.
 1. The access token is then used as a bearer token to authorize the caller in the ASP.NET Web API and then subsequently for Microsoft Graph API.
-1. This sample also uses the same app registration (same Application ID (client ID)) across multiple client applications, a feature supported by the new [Microsoft Identity Platform](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
+1. This sample also uses the same app registration (same Application ID (client ID)) across multiple client applications, a feature supported by the new [Microsoft Identity Platform](https://docs.microsoft.com/azure/active-directory/develop/azure-ad-endpoint-comparison)
 
 The flow is as follows:
 
 1. Sign-in to the client application.
 1. Acquire a token for the Asp.net Web API (`TodoListService`) and call it.
-1. The Asp.Net Web API authorizes the caller and then calls another downstream Web API ([The Microsoft Graph](https://graph.microsoft.com)) after obtaining another [access token](https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens) using the on-behalf-of flow.
+1. The Asp.Net Web API authorizes the caller and then calls another downstream Web API ([The Microsoft Graph](https://graph.microsoft.com)) after obtaining another [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) using the on-behalf-of flow.
 
 The **TodoListService** (the Asp.net Web API) uses a database to:
 
@@ -52,7 +52,7 @@ The **TodoListService** (the Asp.net Web API) uses a database to:
 
   ![Todo list client](./ReadmeFiles/TodoListClient.png)
 
-Both flows use the [OAuth 2.0](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-protocols) protocol to obtain the tokens. For more information about how the protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
+Both flows use the [OAuth 2.0](https://docs.microsoft.com/azure/active-directory/develop/active-directory-v2-protocols) protocol to obtain the tokens. For more information about how the protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
 
 > Looking for previous versions of this code sample? Check out the tags on the [releases](../../releases) GitHub page.
 
@@ -253,7 +253,7 @@ Explore the sample by signing in, adding items to the To Do list, Clearing the c
 
 ## About the code
 
-There are many key points in this sample to make the [**On-Behalf-Of-(OBO) flow**](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) work properly and in this section we will explain these key points for each project.
+There are many key points in this sample to make the [**On-Behalf-Of-(OBO) flow**](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) work properly and in this section we will explain these key points for each project.
 Though we have three applications in the solution, you will notice that we only registered two applications in Azure AD. This is because Azure AD now allows multiple types of applications, like in this case a desktop and a javascript SPA application, to share the same app registration in the Azure AD's app registration portal.
 
 ### TodoListClient
@@ -280,7 +280,7 @@ public MainWindow()
 Important things to notice:
 
 - We create an `IPublicClientApplication` using **MSAL Build Pattern** passing the `clientId` and `authority` in the builder. This `IPublicClientApplication` will be responsible of acquiring access tokens later in the code.
-- `IPublicClientApplication` also has a token cache, that will cache [access tokens](https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens) and [refresh tokens](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#refresh-the-access-token) for the signed-in user. This is done so that the application can fetch access tokens after they have expired without prompting the user to sign-in again.
+- `IPublicClientApplication` also has a token cache, that will cache [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) and [refresh tokens](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#refresh-the-access-token) for the signed-in user. This is done so that the application can fetch access tokens after they have expired without prompting the user to sign-in again.
 - Our `UserTokenCache` implementation uses the local file system for caching. Other popular options for caching tokens are `Database` or `Distributed InMemory cache`.
 
 #### SignIn
@@ -302,7 +302,7 @@ private async void SignIn(object sender = null, RoutedEventArgs args = null)
 
 Important things to notice:
 
-- The scope [`.default`](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) is a built-in scope for every application that refers to the static list of permissions configured on the application registration. In our scenario here, it enables the user to grant consent for permissions for both the Web API and the downstream API (Microsoft Graph). For example, the permissions for the Web API and the downstream API (Microsoft Graph) are listed below:
+- The scope [`.default`](https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) is a built-in scope for every application that refers to the static list of permissions configured on the application registration. In our scenario here, it enables the user to grant consent for permissions for both the Web API and the downstream API (Microsoft Graph). For example, the permissions for the Web API and the downstream API (Microsoft Graph) are listed below:
    - TodoListService-OBO-sample-v2
      - user_impersonation
    - Microsoft Graph
@@ -314,7 +314,7 @@ Important things to notice:
 
 The method to add a new `Todo` is where we consume our **TodoListService-OBO** Web API, that will consume the downstream **Microsoft Graph** using an access token obtained using the **On-Behalf-Of (OBO) flow**.
 
-To check if the user is signed in, we use the method [GetAccountsAsync](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client.clientapplicationbase.getaccountsasync?view=azure-dotnet):
+To check if the user is signed in, we use the method [GetAccountsAsync](https://docs.microsoft.com/dotnet/api/microsoft.identity.client.clientapplicationbase.getaccountsasync?view=azure-dotnet):
 
 ```csharp
 var accounts = (await _app.GetAccountsAsync()).ToList();
@@ -324,6 +324,7 @@ if (!accounts.Any())
    return;
 }
 ```
+
 Now we call the `AcquireTokenSilent` method to get the cached access token we had obtained earlier during our sign-in. With this token, we can then create a HTTP POST request to our Web API attaching it on the header as `Bearer`.
 
 ```csharp
@@ -363,12 +364,12 @@ else
 
 Important things to notice:
 
-- After the **Sign-In**, the user token will be cached and it can be acquired again by calling [AcquireTokenSilent](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client.iclientapplicationbase.acquiretokensilentasync?view=azure-dotnet).
+- After the **Sign-In**, the user token will be cached and it can be acquired again by calling [AcquireTokenSilent](https://docs.microsoft.com/dotnet/api/microsoft.identity.client.iclientapplicationbase.acquiretokensilentasync?view=azure-dotnet).
 - `MsalUiRequiredException` will be thrown if there is no token for that user with the specified scope in the cache, or it got expired. This case requires the user to **Sign-In** again.
 
 ### TodoListService
 
-The **TodoListService** is our Web API project that will make a call to the downstream **Microsoft Graph API** using an access token obtained via the [**On-Behalf-Of (OBO) flow**](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow). The client that called **TodoListService**, sends a `Bearer` token on the HTTP header and this token will be used to impersonate the user and acquire another acess token for **Microsoft Graph API**.
+The **TodoListService** is our Web API project that will make a call to the downstream **Microsoft Graph API** using an access token obtained via the [**On-Behalf-Of (OBO) flow**](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow). The client that called **TodoListService**, sends a `Bearer` token on the HTTP header and this token will be used to impersonate the user and acquire another acess token for **Microsoft Graph API**.
 
 The first key point to pay attention in this project is the `Startup` configuration:
 
@@ -454,7 +455,7 @@ Important things to notice:
 - We are using the scope `user.read` to get the user's profile on **Microsoft Graph**.
 - The `ConfidentialClientApplication` is built using the **Build pattern** introduced in MSAL v3.x, passing the `clientId`, `authority`, `appKey` and `redirectUri` to the builder. All of these values are related to the **TodoListService**. We don't use anything related to the **TodoListClient** application here.
 - We hook the `ConfidentialClientApplication` `UserTokenCache` on our `MSALPerUserSqlTokenCacheProvider`, so we can store the cache on the database. Other alternatives for cache storage could be `InMemory` or `Session`.
-- We instantiate a `UserAssertion` using the `Bearer` token sent by the client and `urn:ietf:params:oauth:grant-type:jwt-bearer` as assertion type ([read more here](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)). This class represents the credential of the user being impersonated.
+- We instantiate a `UserAssertion` using the `Bearer` token sent by the client and `urn:ietf:params:oauth:grant-type:jwt-bearer` as assertion type ([read more here](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)). This class represents the credential of the user being impersonated.
 - The method `AcquireTokenOnBehalfOf` will try to get a token for the impersonated user. If all the validations pass and the impersonated user have consented the requested scope (`user.read` on our sample), an access token will be returned and be used on **Microsoft Graph** request **on behalf on the user**.
 
 ### TodoListSPA
@@ -725,9 +726,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Other samples and documentation
 
 - Other samples for Microsoft identity platform are available from [https://aka.ms/aaddevsamplesv2](https://aka.ms/aaddevsamplesv2)
-- [Microsoft identity platform and Implicit grant flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow)
-- [Microsoft identity platform and OAuth 2.0 On-Behalf-Of flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)
+- [Microsoft identity platform and Implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow)
+- [Microsoft identity platform and OAuth 2.0 On-Behalf-Of flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)
 - The conceptual documentation for MSAL.NET is available from [https://aka.ms/msalnet](https://aka.ms/msalnet)
 - the documentation for Microsoft identity platform is available from [https://aka.ms/aadv2](https://aka.ms/aadv2)
-- [Why update to Microsoft identity platform?](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
+- [Why update to Microsoft identity platform?](https://docs.microsoft.com/azure/active-directory/develop/azure-ad-endpoint-comparison)
 For more information about how OAuth 2.0 protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
