@@ -3,8 +3,8 @@ services: active-directory
 platforms: dotnet
 author: TiagoBrenck
 level: 400
-client: .NET Framework 4.7 Console, JavaScript SPA
-service: ASP.NET Web API
+client: .NET Framework Desktop, JavaScript SPA
+service: ASP.NET Web API, Microsoft Graph API
 endpoint: Microsoft identity platform
 page_type: sample
 languages:
@@ -14,49 +14,45 @@ products:
   - azure-active-directory  
   - dotnet
   - office-ms-graph
-description: "Shows a .NET Framework Desktop and JavaScript SPA application using the on-behalf-of authentication flow to call an ASP.NET Web API, which in turn calls Microsoft Graph."
+description: "This sample demonstrates a .NET Framework Desktop, JavaScript SPA application calling an ASP.NET Web API, Microsoft Graph API that is secured with the Microsoft identity platform"
 ---
 
-# Calling a downstream web API from another web API in Microsoft identity platform using the On-Behalf-Of flow
+# Call a downstream web API (Microsoft Graph) from a web API secured with the Microsoft identity platform (Azure Active Directory) using the On-Behalf-Of flow
 
 ![Build badge](https://identitydivision.visualstudio.com/_apis/public/build/definitions/a7934fdd-dcde-4492-a406-7fad6ac00e17/487/badge)
-
-> This newer sample takes advantage of the Microsoft identity platform.
 
 ## About this sample
 
 ### Overview
 
-This sample demonstrates a .NET Framework Desktop and JavaScript SPA application calling an ASP.NET Web API, which in turn call the [Microsoft Graph](https://graph.microsoft.com). All these are secured using the Microsoft identity platform.
+This sample demonstrates a .NET Framework Desktop and JavaScript SPA application calling an ASP.NET Web API, which in turn calls the [Microsoft Graph](https://graph.microsoft.com) using an [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) obtained using the [on-behalf-of](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) flow. All these are secured using the [Microsoft identity platform (formerly Azure Active Directory for developers)](https://docs.microsoft.com/azure/active-directory/develop/)
 
-1. The .Net client desktop application and the JavaScript SPA application both use the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview) to obtain an access token from Azure Active Directory (Azure AD) for the authenticated users:
-1. The access token is used as a bearer token to authenticate the user when calling the ASP.NET Web API and the Microsoft Graph API.
-1. This sample also uses the name Application ID (client ID) across multiple client applications, a feature supported by the new [Microsoft Identity Platform](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
-
-> Looking for previous versions of this code sample? Check out the tags on the [releases](../../releases) GitHub page.
+1. The .Net client desktop application and the JavaScript SPA application both use the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/azure/active-directory/develop/msal-overview) to obtain an access token for the ASP.NET Web Api from the Microsoft identity platform for the authenticated user.
+1. The access token is then used as a bearer token to authorize the caller in the ASP.NET Web API and then subsequently for Microsoft Graph API.
+1. This sample also uses the same app registration (same Application ID (client ID)) across multiple client applications, a feature supported by the new [Microsoft Identity Platform](https://docs.microsoft.com/azure/active-directory/develop/azure-ad-endpoint-comparison)
 
 The flow is as follows:
 
-1. Sign-in the user in the client application
-1. Acquire a token to the Asp.net Web API (`TodoListService`) and call it.
-1. The Asp.Net Web API then calls another downstream Web API (The Microsoft Graph).
+1. Sign-in to the client application.
+1. Acquire a token for the Asp.net Web API (`TodoListService`) and call it.
+1. The Asp.Net Web API authorizes the caller and then calls another downstream Web API ([The Microsoft Graph](https://graph.microsoft.com)) after obtaining another [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) using the on-behalf-of flow.
 
-The TodoListService uses a database to:
+The **TodoListService** (the Asp.net Web API) uses a database to:
 
-- Store the todo list
-- Illustrate [token cache serialization](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet/wiki/Token-cache-serialization) in a service
+- Store the **ToDo** list.
+- It also illustrates [token cache serialization](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/token-cache-serialization) in a service.
 
    ![Topology](./ReadmeFiles/Topology.png)
 
 ### Scenario. How the sample uses MSAL.NET (and MSAL.js)
 
-- `TodoListClient` uses  MSAL.NET to acquire an access token for the user in order to call **TodoListService** Web API. For more information about how to acquire tokens interactively, see [Acquiring tokens interactively Public client application flows](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet/wiki/Acquiring-tokens-interactively---Public-client-application-flows).
+- `TodoListClient` uses [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to acquire an access token for the user in order to call **TodoListService** Web API. For more information about how to acquire tokens interactively, see [Acquiring tokens interactively with Public client application flows](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively).
 - `TodoListSPA`, the single page application, uses [MSAL.js](https://github.com/AzureAD/microsoft-authentication-library-for-js) to acquire the access token to call **TodoListService** Web API.
-- Then `TodoListService` also uses MSAL.NET  to get an access token to act on behalf of the user to call the Microsoft Graph. For details, see [Service to service calls on behalf of the user](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet/wiki/Service-to-service-calls-on-behalf-of-the-user). It then decorates the todolist item entered by the user, with the First name and the Last name of the user. Below is a screenshot of what happens when the user named *automation service account* entered "item1" in the textbox.
+- Then `TodoListService` also uses [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to get another access token using the on-behalf-of flow to call the [Microsoft Graph](https://graph.microsoft.com/). For details, see [Service to service calls on behalf of the user](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/on-behalf-of). It then uses the claims obtained from the access token to decorate the ToDo list item entered by the user, with the First name and the Last name of the user. Below is a screenshot of what happens when the user named *automation service account* entered "item1" in the textbox.
 
   ![Todo list client](./ReadmeFiles/TodoListClient.png)
 
-Both flows use the OAuth 2.0 protocol to obtain the tokens. For more information about how the protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
+Both flows use the [OAuth 2.0](https://docs.microsoft.com/azure/active-directory/develop/active-directory-v2-protocols) protocol to obtain the tokens. For more information about how the protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
 
 > Looking for previous versions of this code sample? Check out the tags on the [releases](../../releases) GitHub page.
 
@@ -81,7 +77,8 @@ There are two projects in this sample. Each needs to be separately registered in
   - **automatically** creates the Azure AD applications and related objects (passwords, permissions, dependencies) for you
   - modify the Visual Studio projects' configuration files.
 
-If you want to use this automation:
+<details>
+  <summary>Expand this section if you want to use this automation:</summary>
 
 1. On Windows, run PowerShell and navigate to the root of the cloned directory
 1. In PowerShell run:
@@ -98,10 +95,13 @@ If you want to use this automation:
    ```
 
    > Other ways of running the scripts are described in [App Creation Scripts](./AppCreationScripts/AppCreationScripts.md)
+   > The scripts also provide a guide to automated application registration, configuration and removal which can help in your CI/CD scenarios.
 
 1. Open the Visual Studio solution and click start to run the code.
 
-If you don't want to use this automation, follow the steps below.
+</details>
+
+Follow the steps below to manually walk through the steps to register and configure the applications.
 
 #### Choose the Azure AD tenant where you want to create your applications
 
@@ -114,109 +114,44 @@ As a first step you'll need to:
 #### Register the service app (TodoListService-OBO-sample-v2)
 
 1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
-1. Select **New registration**.
-1. When the **Register an application page** appears, enter your application's registration information:
+1. Click **New registration** on top.
+1. In the **Register an application page** that appears, enter your application's registration information:
    - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListService-OBO-sample-v2`.
-   - Change **Supported account types** to **Accounts in any organizational directory**.
-1. Select **Register** to create the application.
-1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
-1. From the **Certificates & secrets** page, in the **Client secrets** section, choose **New client secret**:
-
-   - Type a key description (of instance `app secret`),
-   - Select a key duration of either **In 1 year**, **In 2 years**, or **Never Expires**.
-   - When you press the **Add** button, the key value will be displayed, copy, and save the value in a safe location.
-   - You'll need this key later to configure the project in Visual Studio. This key value will not be displayed again, nor retrievable by any other means,
-     so record it as soon as it is visible from the Azure portal.
-1. Select the **API permissions** section
+   - Change **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts (e.g. Skype, Xbox, Outlook.com)**.
+1. Click on the **Register** button in bottom to create the application.
+1. In the app's registration screen, find the **Application (client) ID** value and record it for use later. You'll need it to configure the configuration file(s) later in your code.
+1. Click the **Save** button on top to save the changes.
+1. In the app's registration screen, click on the **Certificates & secrets** blade in the left to open the page where we can generate secrets and upload certificates.
+1. In the **Client secrets** section, click on **New client secret**:
+   - Type a key description (for instance `app secret`),
+   - Select one of the available key durations (**In 1 year**, **In 2 years**, or **Never Expires**) as per your security concerns.
+   - The generated key value will be displayed when you click the **Add** button. Copy the generated value for use in the steps later.
+   - You'll need this key later in your code's configuration files. This key value will not be displayed again, and is not retrievable by any other means, so make sure to note it from the Azure portal before navigating to any other screen or blade.
+1. In the app's registration screen, click on the **API permissions** blade in the left to open the page where we add access to the Apis that your application needs.
    - Click the **Add a permission** button and then,
-   - Ensure that the **Microsoft APIs** tab is selected
+   - Ensure that the **Microsoft APIs** tab is selected.
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
-   - In the **Delegated permissions** section, ensure that the right permissions are checked: **User.Read**. Use the search box if necessary.
-   - Select the **Add permissions** button.
-
-1. Select the **Expose an API** section, and:
-   - Select **Add a scope**
-   - accept the proposed Application ID URI (api://{clientId}) by selecting **Save and Continue**
-   - Enter the following parameters
-     - for **Scope name** use `user_impersonation`
-     - Select **Admins and users** for **Who can consent**
-     - in **Admin consent display name** type `Access TodoListService-OBO-sample-v2 as a user`
-     - in **Admin consent description** type `Allow the application to access TodoListService-OBO-sample-v2 on behalf of the signed-in user.`
-     - in **User consent display name** type `Access TodoListService-OBO-sample-v2 as a user`
-     - in **User consent description** type `Allow the application to access TodoListService-OBO-sample-v2 on your behalf.`
+   - In the **Delegated permissions** section, select the **User.Read** in the list. Use the search box if necessary.
+   - Click on the **Add permissions** button at the bottom.
+1. In the app's registration screen, click on the **Expose an API** blade in the left to open the page where you can declare the parameters to expose this app as an Api for which client applications can obtain [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) for.
+The first thing that we need to do is to declare the unique [resource](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow) URI that the clients will be using to obtain access tokens for this Api. To declare an resource URI, follow the following steps:
+   - Click `Set` next to the **Application ID URI** to generate a URI that's unique for this app.
+   - For this sample, accept the proposed Application ID URI (api://{clientId}) by selecting **Save**.
+1. All Apis have to publish a minimum of one [scope](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code) for the client's to obtain an access token successfully. To publish a scope, follow the following steps:
+   - Select **Add a scope** button open the **Add a scope** screen and Enter the values as indicated below:
+          - For **Scope name**, use `access_as_user`.
+     - Select **Admins and users** options for **Who can consent?**
+     - For **Admin consent display name** type `Access TodoListService-OBO-sample-v2`
+     - For **Admin consent description** type `Allows the app to access TodoListService-OBO-sample-v2 as the signed-in user.`
+     - For **User consent display name** type `Access TodoListService-OBO-sample-v2`
+     - For **User consent description** type `Allow the application to access TodoListService-OBO-sample-v2 on your behalf.`
      - Keep **State** as **Enabled**
-     - Select **Add scope**
+     - Click on the **Add scope** button on the bottom to save this scope.
 
-#### Register the client app (TodoListClient-OBO-sample-v2)
+##### Configure the  service app (TodoListService-OBO-sample-v2) to use your app registration
 
-1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
-1. Select **New registration**.
-1. When the **Register an application page** appears, enter your application's registration information:
-   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListClient-OBO-sample-v2`.
-   - Change **Supported account types** to **Accounts in any organizational directory**.
-     > Note that there are more than one redirect URIs. You'll need to add them from the **Authentication** tab later after the app has been created successfully.
-1. Select **Register** to create the application.
-1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
-1. From the app's Overview page, select the **Authentication** section.
-   - In the Redirect URIs section, select **Web** in the combo-box and enter the following redirect URIs.
-       - `https://login.microsoftonline.com/common/oauth2/nativeclient`
-       - `urn:ietf:wg:oauth:2.0:oob`
-   - For the `urn:ietf:wg:oauth:2.0:oob` *Redirect URI*, select type `Public client (mobile & desktop)` (this is for the desktop client).
-   - In the **Advanced settings** | **Implicit grant** section, check **ID tokens** as this sample requires
-     the [Implicit grant flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow) to be enabled to
-     sign-in the user, and call an API.
-1. Select **Save**.
-1. Select the **API permissions** section
-   - Click the **Add a permission** button and then,
-   - Ensure that the **My APIs** tab is selected
-   - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
-   - In the **Delegated permissions** section, ensure that the right permissions are checked: **user_impersonation**.
-   - Select the **Add permissions** button
-
-#### Register the SPA app (TodoListSPA-OBO-sample-v2)
-
-1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
-1. Select **New registration**.
-1. When the **Register an application page** appears, enter your application's registration information:
-   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListSPA-OBO-sample-v2`.
-   - Change **Supported account types** to **Accounts in any organizational directory**.
-     > Note that there are more than one redirect URIs. You'll need to add them from the **Authentication** tab later after the app has been created successfully.
-1. Select **Register** to create the application.
-1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the Visual Studio configuration file for this project.
-1. From the app's Overview page, select the **Authentication** section.
-   - In the Redirect URIs section, select **Web** in the combo-box and enter the following redirect URI.
-       - `https://localhost:44377`
-   - In the **Advanced settings** | **Implicit grant** section, check **Access tokens** and **ID tokens** as this sample requires
-     the [Implicit grant flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow) to be enabled to
-     sign-in the user, and call an API.
-1. Select **Save**.
-1. Select the **API permissions** section
-   - Click the **Add a permission** button and then,
-   - Ensure that the **My APIs** tab is selected
-   - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
-   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Access 'TodoListService-OBO-sample-v2'**. Use the search box if necessary.
-   - Select the **Add permissions** button
-
-#### Configure known client applications for service (TodoListService-OBO-sample-v2)
-
-For the middle tier web API (`TodoListService-OBO-sample-v2`) to be able to call the downstream web APIs, the user must grant the middle tier permission to do so in the form of consent.
-However, since the middle tier has no interactive UI of its own, you need to explicitly bind the client app registration in Azure AD, with the registration for the web API.
-This binding merges the consent required by both the client and middle tier into a single dialog, which will be presented to the user by the client.
-You can do so by adding the "Client ID" of the client app, to the manifest of the web API in the `knownClientApplications` property. Here's how:
-
-1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO-sample-v2` app registration and click on the **Manifest** section.
-1. Find the property `knownClientApplications` and add the Client IDs of the client applications (`TodoListClient-OBO-sample-v2`, `TodoListSPA-OBO-sample-v2`) as elements of the array.
-1. Click **Save**
-
-### Step 3:  Configure the sample to use your Azure AD tenant
-
-In the steps below, "ClientID" is the same as "Application ID" or "AppId".
-
-Open the solution in Visual Studio to configure the projects
-
-#### Configure the service project
-
-> Note: if you used the setup scripts, the changes below will have been applied for you
+Open the project in your IDE (like Visual Studio) to configure the code.
+>In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `TodoListService\Web.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
@@ -224,19 +159,66 @@ Open the solution in Visual Studio to configure the projects
 1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO-sample-v2` app, in the Azure portal.
 1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO-sample-v2` application copied from the Azure portal.
 
-#### Configure the client project
+#### Register the client app (TodoListClient-OBO-sample-v2)
 
-> Note: if you used the setup scripts, the changes below will have been applied for you
+1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
+1. Click **New registration** on top.
+1. In the **Register an application page** that appears, enter your application's registration information:
+   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListClient-OBO-sample-v2`.
+   - Change **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts (e.g. Skype, Xbox, Outlook.com)**.
+1. Click on the **Register** button in bottom to create the application.
+1. In the app's registration screen, find the **Application (client) ID** value and record it for use later. You'll need it to configure the configuration file(s) later in your code.
+1. In the app's registration screen, click on the **Authentication** blade in the left.
+   - In the Redirect URIs section, select **Public client (mobile & desktop)** in the drop down and enter the following redirect URIs.
+       - `https://login.microsoftonline.com/common/oauth2/nativeclient`
+   - In the **Redirect URIs** | **Suggested Redirect URIs for public clients (mobile, desktop)** section, select **urn:ietf:wg:oauth:2.0:oob**
+
+1. Click the **Save** button on top to save the changes.
+1. In the app's registration screen, click on the **API permissions** blade in the left to open the page where we add access to the Apis that your application needs.
+   - Click the **Add a permission** button and then,
+   - Ensure that the **My APIs** tab is selected.
+   - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
+   - In the **Delegated permissions** section, select the **access_as_user** in the list. Use the search box if necessary.
+   - Click on the **Add permissions** button at the bottom.
+
+##### Configure the  client app (TodoListClient-OBO-sample-v2) to use your app registration
+
+Open the project in your IDE (like Visual Studio) to configure the code.
+>In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `TodoListClient\App.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
 1. Find the app key `ida:ClientId` and replace the existing value with the application ID (clientId) of the `TodoListClient-OBO-sample-v2` application copied from the Azure portal.
 1. Find the app key `todo:TodoListScope` and replace the existing value with `api://{service clientId}/.default`.
-1. Find the app key `todo:TodoListBaseAddress` and replace the existing value with the base address of the TodoListService-OBO project (by default `https://localhost:44321/`).
+1. Find the app key `todo:TodoListBaseAddress` and replace the existing value with the base address of the TodoListService-OBO-sample-v2 project (by default `https://localhost:44321/`).
 
-#### Configure the client SPA project
+#### Register the spa app (TodoListSPA-OBO-sample-v2)
 
-> Note: if you used the setup scripts, the changes below will have been applied for you
+1. Navigate to the Microsoft identity platform for developers [App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page.
+1. Click **New registration** on top.
+1. In the **Register an application page** that appears, enter your application's registration information:
+   - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListSPA-OBO-sample-v2`.
+   - Change **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts (e.g. Skype, Xbox, Outlook.com)**.
+   - In the Redirect URI (optional) section, select **Web** in the combo-box and enter the following redirect URIs: `https://localhost:44377`.
+1. Click on the **Register** button in bottom to create the application.
+1. In the app's registration screen, find the **Application (client) ID** value and record it for use later. You'll need it to configure the configuration file(s) later in your code.
+1. In the app's registration screen, click on the **Authentication** blade in the left.
+   - In the **Advanced settings** | **Implicit grant** section, check the **Access tokens** and **ID tokens** option as this sample requires
+     the [Implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow) to be enabled to
+     sign-in the user, and call an API.
+
+1. Click the **Save** button on top to save the changes.
+1. In the app's registration screen, click on the **API permissions** blade in the left to open the page where we add access to the Apis that your application needs.
+   - Click the **Add a permission** button and then,
+   - Ensure that the **My APIs** tab is selected.
+   - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
+   - In the **Delegated permissions** section, select the **access_as_user** in the list. Use the search box if necessary.
+   - Click on the **Add permissions** button at the bottom.
+
+##### Configure the  spa app (TodoListSPA-OBO-sample-v2) to use your app registration
+
+Open the project in your IDE (like Visual Studio) to configure the code.
+>In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `TodoListSPA\appconfig.js` file
 1. Find the app key `authority` and replace the existing value with your authority url, for example `https://login.microsoftonline.com/<your_tenant_name>`.
@@ -248,6 +230,19 @@ Open the solution in Visual Studio to configure the projects
 
    > While running the SPA app in the browser, take care to allow popups from this app.
 
+#### Configure Authorized client applications for service (TodoListService-OBO-sample-v2)
+
+For a middle tier web API (`TodoListService-OBO-sample-v2`) to be able to call a downstream web API, the middle tier app needs to be granted the required permissions as well.
+However, since the middle tier cannot interact with the signed-in user, it needs to be explicitly bound to the client app in its Azure AD registration.
+This binding merges the permissions required by both the client and the middle tier WebApi and and presents it to the end user in a single consent dialog. The user than then consent to this combined set of permissions.
+
+To achieve this, you need to add the "Client ID" of the client app, in the manifest of the web API in the `knownClientApplications` property. Here's how:
+
+1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO-sample-v2` app registration, and in the *Expose an API* section, click on **Add a client application**.
+   Enter the Client ID of the client application (`TodoListClient-OBO-sample-v2`) as an element and check the authorized scopes you want to let
+   this client application to access.
+1. Click **Add application**
+
 ### Step 4: Run the sample
 
 Clean the solution, rebuild the solution, and run it. You might want to go into the solution properties and set both projects, or the three projects, as startup projects, with the service project starting first.
@@ -258,7 +253,7 @@ Explore the sample by signing in, adding items to the To Do list, Clearing the c
 
 ## About the code
 
-There are many key points in this sample to make the [**On-Behalf-Of-(OBO) flow**](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) work properly and in this section we will explain these key points for each project.
+There are many key points in this sample to make the [**On-Behalf-Of-(OBO) flow**](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) work properly and in this section we will explain these key points for each project.
 Though we have three applications in the solution, you will notice that we only registered two applications in Azure AD. This is because Azure AD now allows multiple types of applications, like in this case a desktop and a javascript SPA application, to share the same app registration in the Azure AD's app registration portal.
 
 ### TodoListClient
@@ -285,7 +280,7 @@ public MainWindow()
 Important things to notice:
 
 - We create an `IPublicClientApplication` using **MSAL Build Pattern** passing the `clientId` and `authority` in the builder. This `IPublicClientApplication` will be responsible of acquiring access tokens later in the code.
-- `IPublicClientApplication` also has a token cache, that will cache [access tokens](https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens) and [refresh tokens](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#refresh-the-access-token) for the signed-in user. This is done so that the application can fetch access tokens after they have expired without prompting the user to sign-in again.
+- `IPublicClientApplication` also has a token cache, that will cache [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) and [refresh tokens](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#refresh-the-access-token) for the signed-in user. This is done so that the application can fetch access tokens after they have expired without prompting the user to sign-in again.
 - Our `UserTokenCache` implementation uses the local file system for caching. Other popular options for caching tokens are `Database` or `Distributed InMemory cache`.
 
 #### SignIn
@@ -307,7 +302,7 @@ private async void SignIn(object sender = null, RoutedEventArgs args = null)
 
 Important things to notice:
 
-- The scope [`.default`](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) is a built-in scope for every application that refers to the static list of permissions configured on the application registration. In our scenario here, it enables the user to grant consent for permissions for both the Web API and the downstream API (Microsoft Graph). For example, the permissions for the Web API and the downstream API (Microsoft Graph) are listed below:
+- The scope [`.default`](https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#the-default-scope) is a built-in scope for every application that refers to the static list of permissions configured on the application registration. In our scenario here, it enables the user to grant consent for permissions for both the Web API and the downstream API (Microsoft Graph). For example, the permissions for the Web API and the downstream API (Microsoft Graph) are listed below:
    - TodoListService-OBO-sample-v2
      - user_impersonation
    - Microsoft Graph
@@ -319,7 +314,7 @@ Important things to notice:
 
 The method to add a new `Todo` is where we consume our **TodoListService-OBO** Web API, that will consume the downstream **Microsoft Graph** using an access token obtained using the **On-Behalf-Of (OBO) flow**.
 
-To check if the user is signed in, we use the method [GetAccountsAsync](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client.clientapplicationbase.getaccountsasync?view=azure-dotnet):
+To check if the user is signed in, we use the method [GetAccountsAsync](https://docs.microsoft.com/dotnet/api/microsoft.identity.client.clientapplicationbase.getaccountsasync?view=azure-dotnet):
 
 ```csharp
 var accounts = (await _app.GetAccountsAsync()).ToList();
@@ -329,6 +324,7 @@ if (!accounts.Any())
    return;
 }
 ```
+
 Now we call the `AcquireTokenSilent` method to get the cached access token we had obtained earlier during our sign-in. With this token, we can then create a HTTP POST request to our Web API attaching it on the header as `Bearer`.
 
 ```csharp
@@ -368,12 +364,12 @@ else
 
 Important things to notice:
 
-- After the **Sign-In**, the user token will be cached and it can be acquired again by calling [AcquireTokenSilent](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client.iclientapplicationbase.acquiretokensilentasync?view=azure-dotnet).
+- After the **Sign-In**, the user token will be cached and it can be acquired again by calling [AcquireTokenSilent](https://docs.microsoft.com/dotnet/api/microsoft.identity.client.iclientapplicationbase.acquiretokensilentasync?view=azure-dotnet).
 - `MsalUiRequiredException` will be thrown if there is no token for that user with the specified scope in the cache, or it got expired. This case requires the user to **Sign-In** again.
 
 ### TodoListService
 
-The **TodoListService** is our Web API project that will make a call to the downstream **Microsoft Graph API** using an access token obtained via the [**On-Behalf-Of (OBO) flow**](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow). The client that called **TodoListService**, sends a `Bearer` token on the HTTP header and this token will be used to impersonate the user and acquire another acess token for **Microsoft Graph API**.
+The **TodoListService** is our Web API project that will make a call to the downstream **Microsoft Graph API** using an access token obtained via the [**On-Behalf-Of (OBO) flow**](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow). The client that called **TodoListService**, sends a `Bearer` token on the HTTP header and this token will be used to impersonate the user and acquire another acess token for **Microsoft Graph API**.
 
 The first key point to pay attention in this project is the `Startup` configuration:
 
@@ -459,7 +455,7 @@ Important things to notice:
 - We are using the scope `user.read` to get the user's profile on **Microsoft Graph**.
 - The `ConfidentialClientApplication` is built using the **Build pattern** introduced in MSAL v3.x, passing the `clientId`, `authority`, `appKey` and `redirectUri` to the builder. All of these values are related to the **TodoListService**. We don't use anything related to the **TodoListClient** application here.
 - We hook the `ConfidentialClientApplication` `UserTokenCache` on our `MSALPerUserSqlTokenCacheProvider`, so we can store the cache on the database. Other alternatives for cache storage could be `InMemory` or `Session`.
-- We instantiate a `UserAssertion` using the `Bearer` token sent by the client and `urn:ietf:params:oauth:grant-type:jwt-bearer` as assertion type ([read more here](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)). This class represents the credential of the user being impersonated.
+- We instantiate a `UserAssertion` using the `Bearer` token sent by the client and `urn:ietf:params:oauth:grant-type:jwt-bearer` as assertion type ([read more here](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)). This class represents the credential of the user being impersonated.
 - The method `AcquireTokenOnBehalfOf` will try to get a token for the impersonated user. If all the validations pass and the impersonated user have consented the requested scope (`user.read` on our sample), an access token will be returned and be used on **Microsoft Graph** request **on behalf on the user**.
 
 ### TodoListSPA
@@ -730,9 +726,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Other samples and documentation
 
 - Other samples for Microsoft identity platform are available from [https://aka.ms/aaddevsamplesv2](https://aka.ms/aaddevsamplesv2)
-- [Microsoft identity platform and Implicit grant flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow)
-- [Microsoft identity platform and OAuth 2.0 On-Behalf-Of flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)
+- [Microsoft identity platform and Implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-implicit-grant-flow)
+- [Microsoft identity platform and OAuth 2.0 On-Behalf-Of flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow)
 - The conceptual documentation for MSAL.NET is available from [https://aka.ms/msalnet](https://aka.ms/msalnet)
 - the documentation for Microsoft identity platform is available from [https://aka.ms/aadv2](https://aka.ms/aadv2)
-- [Why update to Microsoft identity platform?](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison)
+- [Why update to Microsoft identity platform?](https://docs.microsoft.com/azure/active-directory/develop/azure-ad-endpoint-comparison)
 For more information about how OAuth 2.0 protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).

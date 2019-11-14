@@ -72,6 +72,7 @@ namespace TodoListClient
             //Create an instance of PublicClientApplication using the Build Patten
             _app = PublicClientApplicationBuilder.Create(clientId)
                 .WithAuthority(authority)
+                .WithDefaultRedirectUri()
                 .Build();
 
             //Hooking our file cache into the UserTokenCache
@@ -189,7 +190,7 @@ namespace TodoListClient
             AuthenticationResult result = null;
             try
             {
-                //Calling MSAL to acquire an access token with the scope 'user_impersonation' for the logged user IAccount
+                //Calling MSAL to acquire an access token with the scope 'access_as_user' for the logged user IAccount
                 result = await _app.AcquireTokenSilent(Scopes, accounts.FirstOrDefault())
                     .ExecuteAsync()
                     .ConfigureAwait(false);
