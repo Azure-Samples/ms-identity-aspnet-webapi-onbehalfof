@@ -19,8 +19,7 @@ description: "This sample demonstrates a .NET Framework Desktop, JavaScript SPA 
 
 # Call a downstream web API (Microsoft Graph) from a web API secured with the Microsoft identity platform (Azure Active Directory) using the On-Behalf-Of flow
 
-![Build badge](https://identitydivision.visualstudio.com/_apis/public/build/definitions/a7934fdd-dcde-4492-a406-7fad6ac00e17/487/badge)
-
+[![Build status](https://identitydivision.visualstudio.com/IDDP/_apis/build/status/AAD%20Samples/Azure-Samples%20--%20ms-identity-aspnet-webapi-onbehalfof)](https://identitydivision.visualstudio.com/IDDP/_build/latest?definitionId=947)
 ## About this sample
 
 ### Overview
