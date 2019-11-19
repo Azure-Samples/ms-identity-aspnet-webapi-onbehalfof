@@ -55,6 +55,8 @@ Both flows use the [OAuth 2.0](https://docs.microsoft.com/azure/active-directory
 
 > Looking for previous versions of this code sample? Check out the tags on the [releases](../../releases) GitHub page.
 
+- Developers who wish to gain good familiarity of programming for Microsoft Graph are advised to go through the [An introduction to Microsoft Graph for developers](https://www.youtube.com/watch?v=EBbnpFdB92A) recorded session.
+
 ### Step 1:  Clone or download this repository
 
 From your shell or command line:
