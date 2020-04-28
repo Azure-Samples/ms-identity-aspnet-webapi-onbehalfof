@@ -5,7 +5,7 @@
   "Sample": {
     "Title": "Call a downstream web API (Microsoft Graph) from a web API secured with Microsoft identity platform using the On-Behalf-Of flow",
     "Level": 400,
-    "Client": ".NET Framework Desktop, JavaScript SPA",
+    "Client": ".NET Framework Desktop",
     "Service": "ASP.NET Web API, Microsoft Graph API",
     "RepositoryUrl": "ms-identity-aspnet-webapi-onbehalfof",
     "Endpoint": "AAD v2.0"
@@ -83,7 +83,7 @@
         },
         {
           "key": "todo:TodoListScope",
-          "value": "$serviceIdentifierUri'/.default'"
+          "value": "service.ScopeDefault"
         },
         {
           "key": "todo:TodoListBaseAddress",
