@@ -217,7 +217,6 @@ Function ConfigureApplications
    # create the application 
    $serviceAadApplication = New-AzureADApplication -DisplayName "TodoListService-OBO-sample-v2" `
                                                    -HomePage "https://localhost:44321/" `
-                                                   -AvailableToOtherTenants $True `
                                                    -PasswordCredentials $key `
                                                    -PublicClient $False
    $serviceIdentifierUri = 'api://'+$serviceAadApplication.AppId
@@ -290,7 +289,6 @@ Function ConfigureApplications
    # create the application 
    $clientAadApplication = New-AzureADApplication -DisplayName "TodoListClient-OBO-sample-v2" `
                                                   -ReplyUrls "https://login.microsoftonline.com/common/oauth2/nativeclient" `
-                                                  -AvailableToOtherTenants $True `
                                                   -PublicClient $True
 
    # create the service principal of the newly created application 

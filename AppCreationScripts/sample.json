@@ -15,6 +15,7 @@
       "Id": "service",
       "Name": "TodoListService-OBO-sample-v2",
       "Kind": "WebApi",
+      "Audience": "AzureADMyOrg",
       "HomePage": "https://localhost:44321/",
       "PasswordCredentials": "Auto",
       "RequiredResourcesAccess": [
@@ -27,6 +28,7 @@
 		{
       "Id": "client",
       "Kind": "Desktop",
+      "Audience": "AzureADMyOrg",
 			"Name": "TodoListClient-OBO-sample-v2",
       "ReplyUrls": "https://login.microsoftonline.com/common/oauth2/nativeclient",
 			"RequiredResourcesAccess": [

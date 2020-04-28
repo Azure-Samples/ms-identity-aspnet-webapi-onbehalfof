@@ -20,11 +20,12 @@ description: "This sample demonstrates a .NET Framework Desktop application call
 # Call a downstream web API (Microsoft Graph) from a web API secured with the Microsoft identity platform (Azure Active Directory) using the On-Behalf-Of flow
 
 [![Build status](https://identitydivision.visualstudio.com/IDDP/_apis/build/status/AAD%20Samples/Azure-Samples%20--%20ms-identity-aspnet-webapi-onbehalfof)](https://identitydivision.visualstudio.com/IDDP/_build/latest?definitionId=947)
+
 ## About this sample
 
 ### Overview
 
-This sample demonstrates a .NET Framework Desktop calling an ASP.NET Web API, which in turn calls the [Microsoft Graph](https://graph.microsoft.com) using an [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) obtained using the [on-behalf-of flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) . All these are secured using the [Microsoft identity platform (formerly Azure Active Directory for developers)](https://docs.microsoft.com/azure/active-directory/develop/)
+This sample demonstrates a .NET Framework Desktop app calling an ASP.NET Web API, which in turn calls the [Microsoft Graph](https://graph.microsoft.com) API using an [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) obtained using the [on-behalf-of flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow). All these are secured using the [Microsoft identity platform (formerly Azure Active Directory for developers)](https://docs.microsoft.com/azure/active-directory/develop/)
 
 1. The .Net client desktop application uses the [Microsoft Authentication Library (MSAL)](https://docs.microsoft.com/azure/active-directory/develop/msal-overview) to obtain an access token for the ASP.NET Web Api from the Microsoft identity platform for the authenticated user.
 1. The access token is then used as a bearer token to authorize the caller in the ASP.NET Web API and then subsequently for Microsoft Graph API.
@@ -33,12 +34,12 @@ The flow is as follows:
 
 1. Sign-in to the client application.
 1. Acquire a token for the Asp.net Web API (`TodoListService`) and call it.
-1. The Asp.Net Web API authorizes the caller and then calls another downstream Web API ([Microsoft Graph](https://graph.microsoft.com)) after obtaining another [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) using the on-behalf-of flow.
+1. The Asp.Net Web API authorizes the caller, obtains another [access token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) using the [on-behalf-of flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) and then calls another downstream Web API ([Microsoft Graph](https://graph.microsoft.com)).
 
 The **TodoListService** (the Asp.net Web API) uses a database to:
 
 - Store the **ToDo** list.
-- It also illustrates [token cache serialization](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/token-cache-serialization) in a service.
+- It also illustrates the [token cache serialization](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/token-cache-serialization) in a service.
 
    ![Topology](./ReadmeFiles/Topology.png)
 
@@ -46,7 +47,8 @@ The **TodoListService** (the Asp.net Web API) uses a database to:
 
 - `TodoListClient` uses [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to acquire an access token for the user in order to call **TodoListService** Web API. For more information about how to acquire tokens interactively, see [Acquiring tokens interactively with Public client application flows](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively).
 - Then `TodoListService` also uses [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to get another access token using the on-behalf-of flow to call the [Microsoft Graph](https://graph.microsoft.com/). For details, see [Service to service calls on behalf of the user](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/on-behalf-of).
-   - Developers who wish to gain good familiarity of programming for Microsoft Graph are advised to go through the [An introduction to Microsoft Graph for developers](https://www.youtube.com/watch?v=EBbnpFdB92A) recorded session.
+
+> Developers who wish to gain good familiarity of programming for Microsoft Graph are advised to go through the [An introduction to Microsoft Graph for developers](https://www.youtube.com/watch?v=EBbnpFdB92A) recorded session.
 
 Both flows use the [OAuth 2.0](https://docs.microsoft.com/azure/active-directory/develop/active-directory-v2-protocols) protocol to obtain the tokens. For more information about how the protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](http://go.microsoft.com/fwlink/?LinkId=394414).
 
@@ -54,7 +56,7 @@ Both flows use the [OAuth 2.0](https://docs.microsoft.com/azure/active-directory
 
 To run this sample, you'll need:
 
-- [Visual Studio 2017](https://aka.ms/vsdownload)
+- [Visual Studio 2019](https://aka.ms/vsdownload)
 - An Internet connection
 - An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
 - A user account in your Azure AD tenant. This sample will not work with a Microsoft account (formerly Windows Live account). Therefore, if you signed in to the [Azure portal](https://portal.azure.com) with a Microsoft account and have never created a user account in your directory before, you need to do that now.
@@ -74,7 +76,7 @@ or download and extract the repository .zip file.
 
 There are two projects in this sample. Each needs to be separately registered in your Azure AD tenant. To register these projects, you can:
 
-- either follow the steps [Step 2: Register the sample with your Azure Active Directory tenant](#step-2-register-the-sample-with-your-azure-active-directory-tenant) and [Step 3: Configure the sample to use your Azure AD tenant](#choose-the-azure-ad-tenant-where-you-want-to-create-your-applications)
+- either follow the steps [Step 2: Register the sample with your Azure Active Directory tenant](#step-2-register-the-sample-with-your-azure-active-directory-tenant) and [Step 3:  Configure the sample to use your Azure AD tenant](#choose-the-azure-ad-tenant-where-you-want-to-create-your-applications)
 - or use PowerShell scripts that:
   - **automatically** creates the Azure AD applications and related objects (passwords, permissions, dependencies) for you. Note that this works for Visual Studio only.
   - modify the Visual Studio projects' configuration files.
@@ -106,7 +108,7 @@ There are two projects in this sample. Each needs to be separately registered in
 
 Follow the steps below to manually walk through the steps to register and configure the applications.
 
-### Step 3: Configure the sample to use your Azure AD tenant
+#### Choose the Azure AD tenant where you want to create your applications
 
 As a first step you'll need to:
 
@@ -120,7 +122,7 @@ As a first step you'll need to:
 1. Select **New registration**.
 1. In the **Register an application page** that appears, enter your application's registration information:
    - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListService-OBO-sample-v2`.
-   - Under **Supported account types**, select **Accounts in this organizational directory only (Single tenant)**.
+   - Under **Supported account types**, select **Accounts in this organizational directory only**.
 1. Select **Register** to create the application.
 1. In the app's registration screen, find and note the **Application (client) ID**. You use this value in your app's configuration file(s) later in your code.
 1. Select **Save** to save your changes.
@@ -158,7 +160,7 @@ Open the project in your IDE (like Visual Studio) to configure the code.
 
 1. Open the `TodoListService\Web.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
-1. Find the app key `ida:Audience` and replace the existing value with the App ID URI you registered earlier, when exposing an API. For instance use `api://<application_id>`.
+1. Find the app key `ida:Audience` and replace the existing value with $serviceIdentifierUri.
 1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO-sample-v2` app, in the Azure portal.
 1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO-sample-v2` application copied from the Azure portal.
 
@@ -168,7 +170,7 @@ Open the project in your IDE (like Visual Studio) to configure the code.
 1. Select **New registration**.
 1. In the **Register an application page** that appears, enter your application's registration information:
    - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `TodoListClient-OBO-sample-v2`.
-   - Under **Supported account types**, select **Accounts in this organizational directory only (Single tenant)**.
+   - Under **Supported account types**, select **Accounts in this organizational directory only**.
 1. Select **Register** to create the application.
 1. In the app's registration screen, find and note the **Application (client) ID**. You use this value in your app's configuration file(s) later in your code.
 1. In the app's registration screen, select **Authentication** in the menu.
