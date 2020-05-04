@@ -5,7 +5,7 @@
   "Sample": {
     "Title": "Call a downstream web API (Microsoft Graph) from a web API secured with Microsoft identity platform using the On-Behalf-Of flow",
     "Level": 400,
-    "Client": ".NET Framework Desktop, JavaScript SPA",
+    "Client": ".NET Framework Desktop",
     "Service": "ASP.NET Web API, Microsoft Graph API",
     "RepositoryUrl": "ms-identity-aspnet-webapi-onbehalfof",
     "Endpoint": "AAD v2.0"
@@ -15,6 +15,7 @@
       "Id": "service",
       "Name": "TodoListService-OBO-sample-v2",
       "Kind": "WebApi",
+      "Audience": "AzureADMyOrg",
       "HomePage": "https://localhost:44321/",
       "PasswordCredentials": "Auto",
       "RequiredResourcesAccess": [
@@ -27,6 +28,7 @@
 		{
       "Id": "client",
       "Kind": "Desktop",
+      "Audience": "AzureADMyOrg",
 			"Name": "TodoListClient-OBO-sample-v2",
       "ReplyUrls": "https://login.microsoftonline.com/common/oauth2/nativeclient",
 			"RequiredResourcesAccess": [
@@ -35,19 +37,6 @@
 					"DelegatedPermissions": [ "access_as_user" ]
 				}
 			]
-    },
-    {
-      "Id": "spa",
-      "Kind": "SinglePageApplication",
-      "Name": "TodoListSPA-OBO-sample-v2",
-      "HomePage": "https://localhost:44377/",
-      "ReplyUrls":"https://localhost:44377",
-      "RequiredResourcesAccess": [
-        {
-          "Resource": "service",
-          "DelegatedPermissions": [ "access_as_user" ]
-        }
-      ]
     }
   ],
 
@@ -96,47 +85,11 @@
         },
         {
           "key": "todo:TodoListScope",
-          "value": "$serviceIdentifierUri'/.default'"
+          "value": "service.ScopeDefault"
         },
         {
           "key": "todo:TodoListBaseAddress",
           "value": "service.HomePage"
-        }
-      ]
-    },
-
-    {
-      "App": "spa",
-      "SettingKind": "Text",
-      "SettingFile": "\\..\\TodoListSPA\\appconfig.js",
-      "Mappings": [
-        {
-          "key": "tenant",
-          "value": "$tenantName"
-        },
-        {
-          "key": "clientId",
-          "value": ".AppId"
-        },
-        {
-          "key": "redirectUri",
-          "value": ".HomePage"
-        },
-        {
-          "key": "resourceId",
-          "value": "$serviceIdentifierUri"
-        },
-        {
-          "key": "resourceBaseAddress",
-          "value": "service.HomePage"
-        },
-        {
-          "key": "webApiScope",
-          "value": "$serviceIdentifierUri+\"/.default\""
-        },
-        {
-          "key": "authority",
-          "value": "\"https://login.microsoftonline.com/\"+$tenantName"
         }
       ]
     }
