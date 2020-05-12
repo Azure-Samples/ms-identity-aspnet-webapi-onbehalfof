@@ -252,7 +252,7 @@ Important things to notice:
 When the `SignIn` method is called, the login screen is presented so the user can provide their credentials.
 
 ```csharp
-private static readonly string[] Scopes = { "https://<yourTenant>.onmicrosoft.com/TodoListService-OBO/.default" };
+private static readonly string[] Scopes = { "api://<service_application_id>/.default" };
 
 private async void SignIn(object sender = null, RoutedEventArgs args = null)
 {
