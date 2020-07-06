@@ -59,39 +59,17 @@ namespace TodoListService.Utils
             this.TokenCacheDb = tokenCacheDbContext;
             this.SignedInUser = user;
 
-            this.Initialize(tokenCache, user);
+            this.Initialize(tokenCache);
         }
 
         /// <summary>Initializes this instance of TokenCacheProvider with essentials to initialize themselves.</summary>
         /// <param name="tokenCache">The token cache instance of MSAL application</param>
         /// <param name="httpcontext">The Httpcontext whose Session will be used for caching.This is required by some providers.</param>
-        /// <param name="user">The signed-in user for whom the cache needs to be established. Not needed by all providers.</param>
-        public void Initialize(ITokenCache tokenCache, ClaimsPrincipal user)
+        public void Initialize(ITokenCache tokenCache)
         {
             tokenCache.SetBeforeAccess(this.UserTokenCacheBeforeAccessNotification);
             tokenCache.SetAfterAccess(this.UserTokenCacheAfterAccessNotification);
             tokenCache.SetBeforeWrite(this.UserTokenCacheBeforeWriteNotification);
-
-            if (user == null)
-            {
-                // No users signed in yet, so we return
-                return;
-            }
-
-            this.SignedInUser = user;
-        }
-
-        /// <summary>
-        /// Explores the Claims of a signed-in user (if available) to populate the unique Id of this cache's instance.
-        /// </summary>
-        /// <returns>The signed in user's object.tenant Id , if available in the HttpContext.User instance</returns>
-        private string GetSignedInUsersUniqueId()
-        {
-            if (this.SignedInUser != null)
-            {
-                return this.SignedInUser.GetMsalAccountId();
-            }
-            return null;
         }
 
         /// <summary>
@@ -122,18 +100,16 @@ namespace TodoListService.Utils
         /// <param name="args">Contains parameters used by the MSAL call accessing the cache.</param>
         private void UserTokenCacheAfterAccessNotification(TokenCacheNotificationArgs args)
         {
-            this.SetSignedInUserFromNotificationArgs(args);
-
             // if state changed, i.e. new token obtained
-            if (args.HasStateChanged && !string.IsNullOrWhiteSpace(this.GetSignedInUsersUniqueId()))
+            if (args.HasStateChanged && !string.IsNullOrWhiteSpace(args.SuggestedCacheKey))
             {
                 if (this.InMemoryCache == null)
                 {
                     this.InMemoryCache = new PerWebUserCache
                     {
-                        WebUserUniqueId = this.GetSignedInUsersUniqueId()
+                        WebUserUniqueId = args.SuggestedCacheKey
                     };
-                }
+                };
 
                 this.InMemoryCache.CacheBits = args.TokenCache.SerializeMsalV3();
                 this.InMemoryCache.LastWrite = DateTime.Now;
@@ -150,20 +126,9 @@ namespace TodoListService.Utils
                     this.ReadCacheForSignedInUser(args);
                 }
             }
+
         }
 
-        /// <summary>
-        /// To keep the cache, ClaimsPrincipal and Sql in sync, we ensure that the user's object Id we obtained by MSAL after
-        /// successful sign-in is set as the key for the cache.
-        /// </summary>
-        /// <param name="args">Contains parameters used by the MSAL call accessing the cache.</param>
-        private void SetSignedInUserFromNotificationArgs(TokenCacheNotificationArgs args)
-        {
-            if (this.SignedInUser == null && args.Account != null)
-            {
-                this.SignedInUser = args.Account.ToClaimsPrincipal();
-            }
-        }
 
         /// <summary>
         /// Reads the cache data from the backend database.
@@ -172,18 +137,18 @@ namespace TodoListService.Utils
         {
             if (this.InMemoryCache == null) // first time access
             {
-                this.InMemoryCache = GetLatestUserRecordQuery().FirstOrDefault();
+                this.InMemoryCache = GetLatestUserRecordQuery(args.SuggestedCacheKey).FirstOrDefault();
             }
             else
             {
                 // retrieve last written record from the DB
-                var lastwriteInDb = GetLatestUserRecordQuery().Select(n => n.LastWrite).FirstOrDefault();
+                var lastwriteInDb = GetLatestUserRecordQuery(args.SuggestedCacheKey).Select(n => n.LastWrite).FirstOrDefault();
 
                 // if the persisted copy is newer than the in-memory copy
                 if (lastwriteInDb > InMemoryCache.LastWrite)
                 {
                     // read from from storage, update in-memory copy
-                    this.InMemoryCache = GetLatestUserRecordQuery().FirstOrDefault();
+                    this.InMemoryCache = GetLatestUserRecordQuery(args.SuggestedCacheKey).FirstOrDefault();
                 }
             }
 
@@ -194,18 +159,17 @@ namespace TodoListService.Utils
         /// <summary>
         /// Clears the TokenCache's copy and the database copy of this user's cache.
         /// </summary>
-        public void Clear()
+        public void Clear(string cacheKey)
         {
             // Delete from DB
-            var cacheEntries = this.TokenCacheDb.PerUserCacheList.Where(c => c.WebUserUniqueId == this.GetSignedInUsersUniqueId());
+            var cacheEntries = this.TokenCacheDb.PerUserCacheList.Where(c => c.WebUserUniqueId == cacheKey);
             this.TokenCacheDb.PerUserCacheList.RemoveRange(cacheEntries);
             this.TokenCacheDb.SaveChanges();
         }
 
-        private IOrderedQueryable<PerWebUserCache> GetLatestUserRecordQuery()
+        private IOrderedQueryable<PerWebUserCache> GetLatestUserRecordQuery(string cacheKey)
         {
-            string userId = this.GetSignedInUsersUniqueId();
-            return this.TokenCacheDb.PerUserCacheList.Where(c => c.WebUserUniqueId == userId)
+            return this.TokenCacheDb.PerUserCacheList.Where(c => c.WebUserUniqueId == cacheKey)
                 .OrderByDescending(d => d.LastWrite);
         }
     }
