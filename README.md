@@ -65,12 +65,13 @@ To run this sample, you'll need:
 
 From your shell or command line:
 
-```Shell
+```console
 git clone https://github.com/Azure-Samples/ms-identity-aspnet-webapi-onbehalfof.git
 ```
+
 or download and extract the repository .zip file.
 
-> Given that the name of the sample is quiet long, and so are the names of the referenced NuGet packages, you might want to clone it in a folder close to the root of your hard drive, to avoid file size limitations on Windows.
+> :warning: Given that the name of the sample is quiet long, and so are the names of the referenced packages, you might want to clone it in a folder close to the root of your hard drive, to avoid maximum file path length limitations on Windows.
 
 ### Step 2:  Register the sample application with your Azure Active Directory tenant
 
@@ -129,16 +130,16 @@ As a first step you'll need to:
 1. In the app's registration screen, click on the **Certificates & secrets** blade in the left to open the page where we can generate secrets and upload certificates.
 1. In the **Client secrets** section, click on **New client secret**:
    - Type a key description (for instance `app secret`),
-   - Select one of the available key durations (**In 1 year**, **In 2 years**, or **Never Expires**) as per your security concerns.
+   - Select one of the available key durations (**In 1 year**, **In 2 years**, or **Never Expires**) as per your security posture.
    - The generated key value will be displayed when you click the **Add** button. Copy the generated value for use in the steps later.
    - You'll need this key later in your code's configuration files. This key value will not be displayed again, and is not retrievable by any other means, so make sure to note it from the Azure portal before navigating to any other screen or blade.
-1. In the app's registration screen, click on the **API permissions** blade in the left to open the page where we add access to the Apis that your application needs.
+1. In the app's registration screen, click on the **API permissions** blade in the left to open the page where we add access to the APIs that your application needs.
    - Click the **Add a permission** button and then,
    - Ensure that the **Microsoft APIs** tab is selected.
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
    - In the **Delegated permissions** section, select the **User.Read** in the list. Use the search box if necessary.
    - Click on the **Add permissions** button at the bottom.
-1. In the app's registration screen, click on the **Expose an API** blade to the left to open the page where you can declare the parameters to expose this app as an Api for which client applications can obtain [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) for.
+1. In the app's registration screen, select the **Expose an API** blade to the left to open the page where you can declare the parameters to expose this app as an Api for which client applications can obtain [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) for.
 The first thing that we need to do is to declare the unique [resource](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow) URI that the clients will be using to obtain access tokens for this Api. To declare an resource URI, follow the following steps:
    - Click `Set` next to the **Application ID URI** to generate a URI that is unique for this app.
    - For this sample, accept the proposed Application ID URI (api://{clientId}) by selecting **Save**.
@@ -155,12 +156,13 @@ The first thing that we need to do is to declare the unique [resource](https://d
 
 ##### Configure the  service app (TodoListService-OBO-sample-v2) to use your app registration
 
-Open the project in your IDE (like Visual Studio) to configure the code.
->In the steps below, "ClientID" is the same as "Application ID" or "AppId".
+Open the project in your IDE (like Visual Studio or Visual Studio Code) to configure the code.
+
+> In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `TodoListService\Web.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
-1. Find the app key `ida:Audience` and replace the existing value with $serviceIdentifierUri.
+1. Find the app key `ida:Audience` and replace the existing value with the App ID URI you registered earlier, when exposing an API. For instance use `api://<application_id>`.
 1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO-sample-v2` app, in the Azure portal.
 1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO-sample-v2` application copied from the Azure portal.
 
@@ -176,37 +178,45 @@ Open the project in your IDE (like Visual Studio) to configure the code.
 1. In the app's registration screen, select **Authentication** in the menu.
    - If you don't have a platform added, select **Add a platform** and select the **Public client (mobile & desktop)** option.
    - In the **Redirect URIs** | **Suggested Redirect URIs for public clients (mobile, desktop)** section, select **https://login.microsoftonline.com/common/oauth2/nativeclient**
-
 1. Select **Save** to save your changes.
-1. In the app's registration screen, click on the **API permissions** blade in the left to open the page where we add access to the Apis that your application needs.
+1. In the app's registration screen, click on the **API permissions** blade in the left to open the page where we add access to the APIs that your application needs.
    - Click the **Add a permission** button and then,
    - Ensure that the **My APIs** tab is selected.
    - In the list of APIs, select the API `TodoListService-OBO-sample-v2`.
-   - In the **Delegated permissions** section, select the **access_as_user** in the list. Use the search box if necessary.
+   - In the **Delegated permissions** section, select the **Access 'TodoListService-OBO-sample-v2'** in the list. Use the search box if necessary.
    - Click on the **Add permissions** button at the bottom.
 
 ##### Configure the  client app (TodoListClient-OBO-sample-v2) to use your app registration
 
-Open the project in your IDE (like Visual Studio) to configure the code.
->In the steps below, "ClientID" is the same as "Application ID" or "AppId".
+Open the project in your IDE (like Visual Studio or Visual Studio Code) to configure the code.
+
+> In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `TodoListClient\App.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
 1. Find the app key `ida:ClientId` and replace the existing value with the application ID (clientId) of the `TodoListClient-OBO-sample-v2` application copied from the Azure portal.
-1. Find the app key `todo:TodoListScope` and replace the existing value with `api://<service_application_id>/.default`, where `<service_application_id>` is the Application ID of the API `TodoListService-OBO-sample-v2`.
+1. Find the app key `todo:TodoListScope` and replace the existing value with ScopeDefault.
 1. Find the app key `todo:TodoListBaseAddress` and replace the existing value with the base address of the TodoListService-OBO-sample-v2 project (by default `https://localhost:44321/`).
 
 #### Configure Authorized client applications for service (TodoListService-OBO-sample-v2)
 
-For a middle tier web API (`TodoListService-OBO-sample-v2`) to be able to call a downstream web API, the middle tier app needs to be granted the required permissions as well.
+For a middle tier Web API (`TodoListService-OBO-sample-v2`) to be able to call a downstream Web API, the middle tier app needs to be granted the required permissions as well.
 However, since the middle tier cannot interact with the signed-in user, it needs to be explicitly bound to the client app in its Azure AD registration.
-This binding merges the permissions required by both the client and the middle tier WebApi and and presents it to the end user in a single consent dialog. The user than then consent to this combined set of permissions.
+This binding merges the permissions required by both the client and the middle tier Web Api and presents it to the end user in a single consent dialog. The user then consent to this combined set of permissions.
 
-To achieve this, you need to add the "Client ID" of the client app, in the manifest of the web API in the `knownClientApplications` property. Here's how:
+To achieve this, you need to add the **Application Id** of the client app, in the Manifest of the Web API in the `knownClientApplications` property. Here's how:
 
-1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO-sample-v2` app registration, and in the *Expose an API* section, click on **Add a client application**.
-   Client IDs of the client applications (`TodoListClient-OBO-sample-v2`) as elements of the array.
-1. Click **Add application**
+1. In the [Azure portal](https://portal.azure.com), navigate to your `TodoListService-OBO-sample-v2` app registration, and select **Manifest** section.
+1. In the manifest editor, change the `"knownClientApplications": []` line so that the array contains 
+   the Client ID of the client application (`TodoListClient-OBO-sample-v2`) as an element of the array.
+
+    For instance:
+
+    ```json
+    "knownClientApplications": ["ca8dca8d-f828-4f08-82f5-325e1a1c6428"],
+    ```
+
+1. **Save** the changes to the manifest.
 
 ### Step 4: Run the sample
 
