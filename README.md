@@ -226,6 +226,8 @@ Explore the sample by signing-in, adding items to the To-do list, clearing the c
 
 This sample caches the user's access token in the To-do list service, so it does not request a new access token on every request. This cache is stored in a database.
 
+> [Consider taking a moment to share your experience with us.](https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR73pcsbpbxNJuZCMKN0lURpUQ1Q1MDlOVjEwUUpTMUYxSVEzQkk1N1I4NSQlQCN0PWcu)
+
 ## About the code
 
 There are many key points in this sample to make the [**on-behalf-of flow (OBO)**](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) to work properly and in this section we will explain these key points for each project.
