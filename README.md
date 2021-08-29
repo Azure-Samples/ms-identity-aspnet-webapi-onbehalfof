@@ -61,7 +61,7 @@ To run this sample, you'll need:
 - An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
 - A user account in your Azure AD tenant. This sample will not work with a Microsoft account (formerly Windows Live account). Therefore, if you signed in to the [Azure portal](https://portal.azure.com) with a Microsoft account and have never created a user account in your directory before, you need to do that now.
 
-### Step 1:  Clone or download this repository
+### Step 1: Clone or download this repository
 
 From your shell or command line:
 
@@ -73,11 +73,11 @@ or download and extract the repository .zip file.
 
 > :warning: Given that the name of the sample is quiet long, and so are the names of the referenced packages, you might want to clone it in a folder close to the root of your hard drive, to avoid maximum file path length limitations on Windows.
 
-### Step 2:  Register the sample application with your Azure Active Directory tenant
+### Step 2: Register the sample application with your Azure Active Directory tenant
 
 There are two projects in this sample. Each needs to be separately registered in your Azure AD tenant. To register these projects, you can:
 
-- either follow the steps [Step 2: Register the sample with your Azure Active Directory tenant](#step-2-register-the-sample-with-your-azure-active-directory-tenant) and [Step 3:  Configure the sample to use your Azure AD tenant](#choose-the-azure-ad-tenant-where-you-want-to-create-your-applications)
+- either follow the steps [Step 2: Register the sample application with your Azure Active Directory tenant](#step-2-register-the-sample-application-with-your-azure-active-directory-tenant) and [Step 3: Configure the sample application to use your Azure Active Directory tenant](#step-3-configure-the-sample-application-to-use-your-azure-active-directory-tenant)
 - or use PowerShell scripts that:
   - **automatically** creates the Azure AD applications and related objects (passwords, permissions, dependencies) for you. Note that this works for Visual Studio only.
   - modify the Visual Studio projects' configuration files.
@@ -106,6 +106,8 @@ There are two projects in this sample. Each needs to be separately registered in
 1. Open the Visual Studio solution and click start to run the code.
 
 </details>
+
+### Step 3: Configure the sample application to use your Azure Active Directory tenant
 
 Follow the steps below to manually walk through the steps to register and configure the applications.
 
