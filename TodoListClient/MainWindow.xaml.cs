@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -33,6 +32,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
+using Microsoft.Identity.Client;
 
 namespace TodoListClient
 {
@@ -106,8 +106,7 @@ namespace TodoListClient
                     .ExecuteAsync()
                     .ConfigureAwait(false);
 
-                Dispatcher.Invoke(() =>
-                {
+                Dispatcher.Invoke(() => {
                     SignInButton.Content = clearCacheString;
                     SetUserName(result.Account);
                 });
@@ -148,8 +147,7 @@ namespace TodoListClient
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 List<TodoItem> toDoArray = serializer.Deserialize<List<TodoItem>>(content);
 
-                Dispatcher.Invoke(() =>
-                {
+                Dispatcher.Invoke(() => {
                     TodoList.ItemsSource = toDoArray.Select(t => new { t.Title });
                 });
             }
@@ -211,8 +209,7 @@ namespace TodoListClient
                     message += "Error Code: " + ex.ErrorCode + "Inner Exception : " + ex.InnerException.Message;
                 }
 
-                Dispatcher.Invoke(() =>
-                {
+                Dispatcher.Invoke(() => {
                     UserName.Content = Properties.Resources.UserNotSignedIn;
                     MessageBox.Show("Unexpected error: " + message);
                 });
@@ -272,8 +269,7 @@ namespace TodoListClient
                     .ExecuteAsync()
                     .ConfigureAwait(false);
 
-                Dispatcher.Invoke(() =>
-                {
+                Dispatcher.Invoke(() => {
                     SignInButton.Content = clearCacheString;
                     SetUserName(result.Account);
                     GetTodoList();
@@ -297,7 +293,9 @@ namespace TodoListClient
                     MessageBox.Show(message);
                 }
 
-                UserName.Content = Properties.Resources.UserNotSignedIn;
+                Dispatcher.Invoke(() => {
+                    UserName.Content = Properties.Resources.UserNotSignedIn;
+                });
             }
         }
 
