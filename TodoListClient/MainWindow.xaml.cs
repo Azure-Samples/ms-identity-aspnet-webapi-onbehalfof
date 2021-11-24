@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
 using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Extensions.Msal;
 
 namespace TodoListClient
 {
@@ -57,6 +58,19 @@ namespace TodoListClient
         private static string todoListBaseAddress = ConfigurationManager.AppSettings["todo:TodoListBaseAddress"];
         private static readonly string[] Scopes = { todoListScope };
 
+        // Cache settings
+        public const string CacheFileName = "msal_cache.dat";
+        public const string CacheDir = "MSAL_CACHE";
+
+        public const string KeyChainServiceName = "msal_service";
+        public const string KeyChainAccountName = "msal_account";
+
+        public const string LinuxKeyRingSchema = "com.contoso.devtools.tokencache";
+        public const string LinuxKeyRingCollection = MsalCacheHelper.LinuxKeyRingDefaultCollection;
+        public const string LinuxKeyRingLabel = "MSAL token cache for all Contoso dev tool apps.";
+        public static readonly KeyValuePair<string, string> LinuxKeyRingAttr1 = new KeyValuePair<string, string>("Version", "1");
+        public static readonly KeyValuePair<string, string> LinuxKeyRingAttr2 = new KeyValuePair<string, string>("ProductGroup", "MyApps");
+
         private HttpClient httpClient = new HttpClient();
         private readonly IPublicClientApplication _app;
 
@@ -69,14 +83,31 @@ namespace TodoListClient
         {
             InitializeComponent();
 
+            //Initialize MSAL cross-platform token cache
+            //as recommended at https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-net-token-cache-serialization?tabs=desktop
+            //The actual code is taken from https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/wiki/Cross-platform-Token-Cache
+            var storageProperties =
+             new StorageCreationPropertiesBuilder(CacheFileName, CacheDir)
+             .WithLinuxKeyring(
+                 LinuxKeyRingSchema,
+                 LinuxKeyRingCollection,
+                 LinuxKeyRingLabel,
+                 LinuxKeyRingAttr1,
+                 LinuxKeyRingAttr2)
+             .WithMacKeyChain(
+                 KeyChainServiceName,
+                 KeyChainAccountName)
+             .Build();
+
             //Create an instance of PublicClientApplication using the Build Patten
             _app = PublicClientApplicationBuilder.Create(clientId)
                 .WithAuthority(authority)
-                .WithDefaultRedirectUri()
+                .WithDefaultRedirectUri()                
                 .Build();
 
-            //Hooking our file cache into the UserTokenCache
-            TokenCacheHelper.EnableSerialization(_app.UserTokenCache);
+            // This hooks up the cross-platform cache into MSAL
+            var cacheHelper = Task.Run(()=> MsalCacheHelper.CreateAsync(storageProperties)).Result;
+            cacheHelper.RegisterCache(_app.UserTokenCache);
 
             //Retrieve the existing data from the database
             GetTodoList();
