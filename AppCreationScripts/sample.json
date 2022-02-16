@@ -18,6 +18,21 @@
       "Audience": "AzureADMyOrg",
       "HomePage": "https://localhost:44321/",
       "PasswordCredentials": "Auto",
+      "Scopes":[
+        "ToDoList.Read",
+        "ToDoList.Write"
+      ],
+      "AppRoles": [
+        {
+          "Types": [ "Application" ],
+          "Name": "ToDoList.Read.All",
+          "Description": "Read all ToDos as an application."
+        },
+        {
+          "Types": [ "Application" ],
+          "Name": "ToDoList.Write.All",
+          "Description": "Read and write all ToDos as an application."
+        }],
       "RequiredResourcesAccess": [
         {
           "Resource": "Microsoft Graph",
@@ -25,18 +40,30 @@
         }
       ]
     },
-		{
+    {
       "Id": "client",
       "Kind": "Desktop",
       "Audience": "AzureADMyOrg",
-			"Name": "TodoListClient-OBO-sample-v2",
+      "Name": "TodoListClient-OBO-sample-v2",
       "ReplyUrls": "https://login.microsoftonline.com/common/oauth2/nativeclient",
-			"RequiredResourcesAccess": [
-				{
-					"Resource": "service",
-					"DelegatedPermissions": [ "access_as_user" ]
-				}
-			]
+      "RequiredResourcesAccess": [
+        {
+          "Resource": "service",
+          "DelegatedPermissions": [ "ToDoList.Read" ]
+        },
+        {
+          "Resource": "service",
+          "DelegatedPermissions": [ "ToDoList.Write" ]
+        },
+        {
+          "Resource": "service",
+          "ApplicationPermissions": [ "ToDoList.Read.All" ]
+        },
+        {
+          "Resource": "service",
+          "ApplicationPermissions": [ "ToDoList.Write.All" ]
+        }
+      ]
     }
   ],
 
