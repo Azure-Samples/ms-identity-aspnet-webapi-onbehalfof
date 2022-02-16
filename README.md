@@ -56,11 +56,11 @@ Both flows use the [OAuth 2.0](https://docs.microsoft.com/azure/active-directory
 
 To run this sample, you'll need:
 
-- [Visual Studio 2019](https://aka.ms/vsdownload)
+- [Visual Studio](https://aka.ms/vsdownload)
 - An Internet connection
 - An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
 - A user account in your Azure AD tenant. This sample will not work with a Microsoft account (formerly Windows Live account). Therefore, if you signed in to the [Azure portal](https://portal.azure.com) with a Microsoft account and have never created a user account in your directory before, you need to do that now.
-- TODO: Add a link to Sql server express requirement
+- [SQL Server Express Edition](https://www.microsoft.com/en-ca/sql-server/sql-server-downloads)
 
 ### Step 1: Clone or download this repository
 
