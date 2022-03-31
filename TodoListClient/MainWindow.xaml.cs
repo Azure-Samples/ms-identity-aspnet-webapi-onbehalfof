@@ -102,11 +102,11 @@ namespace TodoListClient
             //Create an instance of PublicClientApplication using the Build Patten
             _app = PublicClientApplicationBuilder.Create(clientId)
                 .WithAuthority(authority)
-                .WithDefaultRedirectUri()                
+                .WithDefaultRedirectUri()
                 .Build();
 
             // This hooks up the cross-platform cache into MSAL
-            var cacheHelper = Task.Run(()=> MsalCacheHelper.CreateAsync(storageProperties)).Result;
+            var cacheHelper = Task.Run(() => MsalCacheHelper.CreateAsync(storageProperties)).Result;
             cacheHelper.RegisterCache(_app.UserTokenCache);
 
             //Retrieve the existing data from the database
@@ -137,7 +137,8 @@ namespace TodoListClient
                     .ExecuteAsync()
                     .ConfigureAwait(false);
 
-                Dispatcher.Invoke(() => {
+                Dispatcher.Invoke(() =>
+                {
                     SignInButton.Content = clearCacheString;
                     SetUserName(result.Account);
                 });
@@ -178,7 +179,8 @@ namespace TodoListClient
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 List<TodoItem> toDoArray = serializer.Deserialize<List<TodoItem>>(content);
 
-                Dispatcher.Invoke(() => {
+                Dispatcher.Invoke(() =>
+                {
                     TodoList.ItemsSource = toDoArray.Select(t => new { t.Title });
                 });
             }
@@ -240,7 +242,8 @@ namespace TodoListClient
                     message += "Error Code: " + ex.ErrorCode + "Inner Exception : " + ex.InnerException.Message;
                 }
 
-                Dispatcher.Invoke(() => {
+                Dispatcher.Invoke(() =>
+                {
                     UserName.Content = Properties.Resources.UserNotSignedIn;
                     MessageBox.Show("Unexpected error: " + message);
                 });
@@ -300,7 +303,8 @@ namespace TodoListClient
                     .ExecuteAsync()
                     .ConfigureAwait(false);
 
-                Dispatcher.Invoke(() => {
+                Dispatcher.Invoke(() =>
+                {
                     SignInButton.Content = clearCacheString;
                     SetUserName(result.Account);
                     GetTodoList();
@@ -324,7 +328,8 @@ namespace TodoListClient
                     MessageBox.Show(message);
                 }
 
-                Dispatcher.Invoke(() => {
+                Dispatcher.Invoke(() =>
+                {
                     UserName.Content = Properties.Resources.UserNotSignedIn;
                 });
             }

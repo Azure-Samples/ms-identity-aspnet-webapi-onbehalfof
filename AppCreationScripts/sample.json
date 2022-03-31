@@ -23,6 +23,11 @@
           "Resource": "Microsoft Graph",
           "DelegatedPermissions": [ "User.Read" ]
         }
+      ],
+      "ManualSteps": [
+        {
+          "Comment": " Navigate to Manifest and change 'accessTokenAcceptedVersion' to value of 2."
+        }
       ]
     },
 		{
@@ -54,6 +59,10 @@
         {
           "key": "ida:Tenant",
           "value": "$tenantName"
+        },
+        {
+          "key": "ida:TenantId",
+          "value": "$tenantId"
         },
         {
           "key": "ida:Audience",
