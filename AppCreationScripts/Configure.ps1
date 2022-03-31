@@ -342,14 +342,24 @@ Function ConfigureApplications
    ReplaceSetting -configFilePath $configFile -key "ida:Audience" -newValue ($serviceIdentifierUri)
    ReplaceSetting -configFilePath $configFile -key "ida:AppKey" -newValue ($serviceAppKey)
    ReplaceSetting -configFilePath $configFile -key "ida:ClientID" -newValue ($serviceAadApplication.AppId)
+   ReplaceSetting -configFilePath $configFile -key "ida:TenantId" -newValue ($tenantId)
 
    # Update config file for 'client'
    $configFile = $pwd.Path + "\..\TodoListClient\App.Config"
    Write-Host "Updating the sample code ($configFile)"
-   ReplaceSetting -configFilePath $configFile -key "ida:Tenant" -newValue ($tenantName)
+   ReplaceSetting -configFilePath $configFile -key "ida:Tenant" -newValue ($tenantName)   
    ReplaceSetting -configFilePath $configFile -key "ida:ClientId" -newValue ($clientAadApplication.AppId)
    ReplaceSetting -configFilePath $configFile -key "todo:TodoListScope" -newValue (("api://"+$serviceAadApplication.AppId+"/.default"))
    ReplaceSetting -configFilePath $configFile -key "todo:TodoListBaseAddress" -newValue ($serviceAadApplication.HomePage)
+
+   Write-Host ""
+   Write-Host -ForegroundColor Green "------------------------------------------------------------------------------------------------" 
+   Write-Host "IMPORTANT: Please follow the instructions below to complete a few manual step(s) in the Azure portal":
+   Write-Host "- For 'Service'"
+   Write-Host "  - Navigate to '$servicePortalUrl'"
+   Write-Host "  - Navigate to Manifest and change 'accessTokenAcceptedVersion' to value of 2." -ForegroundColor Red 
+
+   Write-Host -ForegroundColor Green "------------------------------------------------------------------------------------------------" 
   
    Add-Content -Value "</tbody></table></body></html>" -Path createdApps.html  
 }
