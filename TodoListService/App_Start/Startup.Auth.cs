@@ -24,9 +24,7 @@ namespace TodoListService
                     {
                         SaveSigninToken = true,
                         ValidAudiences = new List<string> { ConfigurationManager.AppSettings["ida:Audience"], ConfigurationManager.AppSettings["ida:ClientId"] },
-                        IssuerValidator = AadIssuerValidator.
-                        GetAadIssuerValidator(issuer)
-                        .Validate
+                        IssuerValidator = AadIssuerValidator.GetAadIssuerValidator(issuer).Validate
                     }
                 });
         }
