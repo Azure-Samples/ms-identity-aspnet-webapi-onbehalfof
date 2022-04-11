@@ -12,6 +12,8 @@ namespace TodoListService
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
+            var issuer = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], ConfigurationManager.AppSettings["ida:TenantId"]);
+
             app.UseWindowsAzureActiveDirectoryBearerAuthentication(
                 new WindowsAzureActiveDirectoryBearerAuthenticationOptions
                 {
@@ -22,9 +24,8 @@ namespace TodoListService
                     {
                         SaveSigninToken = true,
                         ValidAudiences = new List<string> { ConfigurationManager.AppSettings["ida:Audience"], ConfigurationManager.AppSettings["ida:ClientId"] },
-                        ValidateIssuer = true,
                         IssuerValidator = AadIssuerValidator.
-                        GetAadIssuerValidator(string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], ConfigurationManager.AppSettings["ida:TenantId"]))
+                        GetAadIssuerValidator(issuer)
                         .Validate
                     }
                 });
