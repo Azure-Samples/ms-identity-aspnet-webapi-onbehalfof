@@ -164,7 +164,6 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 
 1. Open the `TodoListService\Web.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
-1. Find the app key `ida:TenantId` and replace the existing value with your Azure AD tenant id.
 1. Find the app key `ida:Audience` and replace the existing value with the App ID URI you registered earlier, when exposing an API. For instance use `api://<application_id>`.
 1. Find the app key `ida:AppKey` and replace the existing value with the key you saved during the creation of the `TodoListService-OBO-sample-v2` app, in the Azure portal.
 1. Find the app key `ida:ClientID` and replace the existing value with the application ID (clientId) of the `TodoListService-OBO-sample-v2` application copied from the Azure portal.
@@ -198,7 +197,7 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 1. Open the `TodoListClient\App.Config` file
 1. Find the app key `ida:Tenant` and replace the existing value with your Azure AD tenant name.
 1. Find the app key `ida:ClientId` and replace the existing value with the application ID (clientId) of the `TodoListClient-OBO-sample-v2` application copied from the Azure portal.
-1. Find the app key `todo:TodoListScope` and replace the existing value with ScopeDefault.
+1. Find the app key `todo:TodoListScope` and replace the existing value with the default scope. The default scope is created by appending `/.default` to the service's App ID URL (e.g. `api://a0000001-000a-000a-000a-00000000000a/.default`), and is explained further [below](#signin).
 1. Find the app key `todo:TodoListBaseAddress` and replace the existing value with the base address of the TodoListService-OBO-sample-v2 project (by default `https://localhost:44321/`).
 
 #### Configure Authorized client applications for service (TodoListService-OBO-sample-v2)
