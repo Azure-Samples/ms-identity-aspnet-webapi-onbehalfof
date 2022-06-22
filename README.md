@@ -21,6 +21,8 @@ description: "This sample demonstrates a .NET Framework Desktop application call
 
 [![Build status](https://identitydivision.visualstudio.com/IDDP/_apis/build/status/AAD%20Samples/Azure-Samples%20--%20ms-identity-aspnet-webapi-onbehalfof)](https://identitydivision.visualstudio.com/IDDP/_build/latest?definitionId=947)
 
+> We have renamed the default branch to main. To rename your local repo follow the directions [here](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch#updating-a-local-clone-after-a-branch-name-changes).
+
 ## About this sample
 
 ### Overview
