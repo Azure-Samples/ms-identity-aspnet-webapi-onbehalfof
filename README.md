@@ -73,7 +73,7 @@ git clone https://github.com/Azure-Samples/ms-identity-aspnet-webapi-onbehalfof.
 
 or download and extract the repository .zip file.
 
-> :warning: Given that the name of the sample is quiet long, and so are the names of the referenced packages, you might want to clone it in a folder close to the root of your hard drive, to avoid maximum file path length limitations on Windows.
+> :warning: Given that the name of the sample is quite long, and so are the names of the referenced packages, you might want to clone it in a folder close to the root of your hard drive, to avoid maximum file path length limitations on Windows.
 
 ### Step 2: Register the sample application with your Azure Active Directory tenant
 
