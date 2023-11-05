@@ -162,7 +162,7 @@ namespace TodoListClient
                 }
                 MessageBox.Show(message);
 
-                UserName.Content = Properties.Resources.UserNotSignedIn;
+                UserName.Dispatcher.Invoke(() => UserName.Content = Properties.Resources.UserNotSignedIn);
                 return;
             }
 
